@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.video.mapper.ColumnsMapper">
+
+    <resultMap type="Columns" id="ColumnsResult">
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="version"    column="version"    />
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="value"    column="value"    />
+        <result property="order"    column="order"    />
+        <result property="status"    column="status"    />
+        <result property="type"    column="type"    />
+    </resultMap>
+
+    <sql id="selectColumnsVo">
+        select create_time, update_time, create_by, update_by, remark, version, id, `name`, `value`, `order`, `status`, `type` from columns
+    </sql>
+
+    <select id="selectColumnsList" parameterType="Columns" resultMap="ColumnsResult">
+        <include refid="selectColumnsVo"/>
+        <where>
+            <if test="version != null "> and version = #{version}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="value != null  and value != ''"> and value = #{value}</if>
+            <if test="order != null "> and order = #{order}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+        </where>
+    </select>
+
+    <select id="selectColumnsById" parameterType="Long" resultMap="ColumnsResult">
+        <include refid="selectColumnsVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertColumns" parameterType="Columns" useGeneratedKeys="true" keyProperty="id">
+        insert into columns
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="updateBy != null and updateBy != ''">update_by,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="version != null">version,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="value != null and value != ''">value,</if>
+            <if test="order != null">order,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="type != null and type != ''">type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="updateBy != null and updateBy != ''">#{updateBy},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="version != null">#{version},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="value != null and value != ''">#{value},</if>
+            <if test="order != null">#{order},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="type != null and type != ''">#{type},</if>
+         </trim>
+    </insert>
+
+    <update id="updateColumns" parameterType="Columns">
+        update columns
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="value != null and value != ''">value = #{value},</if>
+            <if test="order != null">order = #{order},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteColumnsById" parameterType="Long">
+        delete from columns where id = #{id}
+    </delete>
+
+    <delete id="deleteColumnsByIds" parameterType="String">
+        delete from columns where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
