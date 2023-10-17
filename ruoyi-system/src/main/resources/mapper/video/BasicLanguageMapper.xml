@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.video.mapper.BasicLanguageMapper">
+
+    <resultMap type="BasicLanguage" id="BasicLanguageResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="fullname"    column="fullname"    />
+        <result property="countryId"    column="country_id"    />
+        <result property="nameEn"    column="name_en"    />
+        <result property="fullnameEn"    column="fullname_en"    />
+        <result property="originalName"    column="original_name"    />
+        <result property="originalFullname"    column="original_fullname"    />
+        <result property="brief"    column="brief"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="version"    column="version"    />
+        <result property="movieCount"    column="name"  />
+        <association property="country" column="country_id" javaType="BasicCountry" resultMap="BasicCountryResult"/>
+    </resultMap>
+
+    <resultMap type="BasicCountry" id="BasicCountryResult">
+        <result property="id"    column="country_id"    />
+        <result property="name"    column="country_name"    />
+        <result property="fullname"    column="country_fullname"    />
+    </resultMap>
+
+    <sql id="selectBasicLanguageVo">
+        select id, name, fullname, country_id, name_en, fullname_en, original_name, original_fullname, brief, create_time, update_time, create_by, update_by, remark, version, from basic_language
+    </sql>
+
+    <select id="selectBasicLanguageList" parameterType="BasicLanguage" resultMap="BasicLanguageResult">
+        select l.id, l.name, l.fullname, l.country_id, l.name_en, l.fullname_en, l.original_name, l.original_fullname, l.brief, l.create_time, l.update_time, l.create_by, l.update_by, l.remark, l.version, c.name country_name,c.fullname country_fullname,c.id country_id
+        from basic_language l
+        left join basic_country c on l.country_id = c.id
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="fullname != null  and fullname != ''"> and fullname like concat('%', #{fullname}, '%')</if>
+            <if test="countryId != null "> and country_id = #{countryId}</if>
+            <if test="nameEn != null  and nameEn != ''"> and name_en = #{nameEn}</if>
+            <if test="fullnameEn != null  and fullnameEn != ''"> and fullname_en = #{fullnameEn}</if>
+            <if test="originalName != null  and originalName != ''"> and original_name like concat('%', #{originalName}, '%')</if>
+            <if test="originalFullname != null  and originalFullname != ''"> and original_fullname like concat('%', #{originalFullname}, '%')</if>
+            <if test="brief != null  and brief != ''"> and brief = #{brief}</if>
+            <if test="version != null "> and version = #{version}</if>
+        </where>
+    </select>
+
+    <select id="selectBasicLanguageById" parameterType="Long" resultMap="BasicLanguageResult">
+        <include refid="selectBasicLanguageVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBasicLanguage" parameterType="BasicLanguage" useGeneratedKeys="true" keyProperty="id">
+        insert into basic_language
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="fullname != null">fullname,</if>
+            <if test="countryId != null">country_id,</if>
+            <if test="nameEn != null">name_en,</if>
+            <if test="fullnameEn != null">fullname_en,</if>
+            <if test="originalName != null">original_name,</if>
+            <if test="originalFullname != null">original_fullname,</if>
+            <if test="brief != null">brief,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="updateBy != null and updateBy != ''">update_by,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="version != null">version,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="fullname != null">#{fullname},</if>
+            <if test="countryId != null">#{countryId},</if>
+            <if test="nameEn != null">#{nameEn},</if>
+            <if test="fullnameEn != null">#{fullnameEn},</if>
+            <if test="originalName != null">#{originalName},</if>
+            <if test="originalFullname != null">#{originalFullname},</if>
+            <if test="brief != null">#{brief},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="updateBy != null and updateBy != ''">#{updateBy},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="version != null">#{version},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBasicLanguage" parameterType="BasicLanguage">
+        update basic_language
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="fullname != null">fullname = #{fullname},</if>
+            <if test="countryId != null">country_id = #{countryId},</if>
+            <if test="nameEn != null">name_en = #{nameEn},</if>
+            <if test="fullnameEn != null">fullname_en = #{fullnameEn},</if>
+            <if test="originalName != null">original_name = #{originalName},</if>
+            <if test="originalFullname != null">original_fullname = #{originalFullname},</if>
+            <if test="brief != null">brief = #{brief},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="version != null">version = #{version},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBasicLanguageById" parameterType="Long">
+        delete from basic_language where id = #{id}
+    </delete>
+
+    <delete id="deleteBasicLanguageByIds" parameterType="String">
+        delete from basic_language where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

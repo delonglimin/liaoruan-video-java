@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.video.mapper.BasicGenreMapper">
+
+    <resultMap type="BasicGenre" id="BasicGenreResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="nameEn"    column="name_en"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="version"    column="version"    />
+        <result property="columnValue"    column="column_value"    />
+    </resultMap>
+
+    <sql id="selectBasicGenreVo">
+        select id, name, name_en, status, create_time, update_time, create_by, update_by, remark, version, column_value from basic_genre
+    </sql>
+
+    <select id="selectBasicGenreList" parameterType="BasicGenre" resultMap="BasicGenreResult">
+        <include refid="selectBasicGenreVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="nameEn != null  and nameEn != ''"> and name_en = #{nameEn}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="version != null "> and version = #{version}</if>
+            <if test="columnValue != null  and columnValue != ''"> and column_value = #{columnValue}</if>
+        </where>
+    </select>
+
+    <select id="selectBasicGenreById" parameterType="Long" resultMap="BasicGenreResult">
+        <include refid="selectBasicGenreVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBasicGenre" parameterType="BasicGenre" useGeneratedKeys="true" keyProperty="id">
+        insert into basic_genre
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="nameEn != null">name_en,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            <if test="version != null">version,</if>
+            <if test="columnValue != null">column_value,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="nameEn != null">#{nameEn},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="version != null">#{version},</if>
+            <if test="columnValue != null">#{columnValue},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBasicGenre" parameterType="BasicGenre">
+        update basic_genre
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="nameEn != null">name_en = #{nameEn},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="columnValue != null">column_value = #{columnValue},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBasicGenreById" parameterType="Long">
+        delete from basic_genre where id = #{id}
+    </delete>
+
+    <delete id="deleteBasicGenreByIds" parameterType="String">
+        delete from basic_genre where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

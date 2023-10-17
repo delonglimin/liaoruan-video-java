@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.video.mapper.BasicCountryMapper">
+
+    <resultMap type="BasicCountry" id="BasicCountryResult">
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="version"    column="version"    />
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="code"    column="code"    />
+        <result property="type"    column="type"    />
+        <result property="fullname"    column="fullname"    />
+        <result property="continent"    column="continent"    />
+        <result property="nameEn"    column="nameEn"    />
+        <result property="fullnameEn"    column="fullnameEn"    />
+        <result property="originalName"    column="originalName"    />
+        <result property="originalFullname"    column="originalFullname"    />
+        <result property="beginDate"    column="beginDate"    />
+        <result property="endDate"    column="endDate"    />
+        <result property="flag"    column="flag"    />
+        <result property="brief"    column="brief"    />
+    </resultMap>
+
+    <sql id="selectBasicCountryVo">
+        select create_time, update_time, create_by, update_by, remark, version, id, name, code, type, fullname, continent, nameEn, fullnameEn, originalName, originalFullname, beginDate, endDate, flag, brief from basic_country
+    </sql>
+
+    <select id="selectBasicCountryList" parameterType="BasicCountry" resultMap="BasicCountryResult">
+        <include refid="selectBasicCountryVo"/>
+        <where>
+            <if test="version != null "> and version = #{version}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="fullname != null  and fullname != ''"> and fullname like concat('%', #{fullname}, '%')</if>
+            <if test="continent != null  and continent != ''"> and continent = #{continent}</if>
+            <if test="nameEn != null  and nameEn != ''"> and nameEn = #{nameEn}</if>
+            <if test="fullnameEn != null  and fullnameEn != ''"> and fullnameEn = #{fullnameEn}</if>
+            <if test="originalName != null  and originalName != ''"> and originalName like concat('%', #{originalName}, '%')</if>
+            <if test="originalFullname != null  and originalFullname != ''"> and originalFullname like concat('%', #{originalFullname}, '%')</if>
+            <if test="beginDate != null  and beginDate != ''"> and beginDate = #{beginDate}</if>
+            <if test="endDate != null  and endDate != ''"> and endDate = #{endDate}</if>
+            <if test="flag != null  and flag != ''"> and flag = #{flag}</if>
+            <if test="brief != null  and brief != ''"> and brief = #{brief}</if>
+        </where>
+    </select>
+
+    <select id="selectBasicCountryById" parameterType="Long" resultMap="BasicCountryResult">
+        <include refid="selectBasicCountryVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBasicCountry" parameterType="BasicCountry" useGeneratedKeys="true" keyProperty="id">
+        insert into basic_country
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="updateBy != null and updateBy != ''">update_by,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="version != null">version,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="code != null and code != ''">code,</if>
+            <if test="type != null">type,</if>
+            <if test="fullname != null and fullname != ''">fullname,</if>
+            <if test="continent != null and continent != ''">continent,</if>
+            <if test="nameEn != null and nameEn != ''">nameEn,</if>
+            <if test="fullnameEn != null and fullnameEn != ''">fullnameEn,</if>
+            <if test="originalName != null and originalName != ''">originalName,</if>
+            <if test="originalFullname != null and originalFullname != ''">originalFullname,</if>
+            <if test="beginDate != null">beginDate,</if>
+            <if test="endDate != null">endDate,</if>
+            <if test="flag != null">flag,</if>
+            <if test="brief != null and brief != ''">brief,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="updateBy != null and updateBy != ''">#{updateBy},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="version != null">#{version},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="code != null and code != ''">#{code},</if>
+            <if test="type != null">#{type},</if>
+            <if test="fullname != null and fullname != ''">#{fullname},</if>
+            <if test="continent != null and continent != ''">#{continent},</if>
+            <if test="nameEn != null and nameEn != ''">#{nameEn},</if>
+            <if test="fullnameEn != null and fullnameEn != ''">#{fullnameEn},</if>
+            <if test="originalName != null and originalName != ''">#{originalName},</if>
+            <if test="originalFullname != null and originalFullname != ''">#{originalFullname},</if>
+            <if test="beginDate != null">#{beginDate},</if>
+            <if test="endDate != null">#{endDate},</if>
+            <if test="flag != null">#{flag},</if>
+            <if test="brief != null and brief != ''">#{brief},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBasicCountry" parameterType="BasicCountry">
+        update basic_country
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="code != null and code != ''">code = #{code},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="fullname != null and fullname != ''">fullname = #{fullname},</if>
+            <if test="continent != null and continent != ''">continent = #{continent},</if>
+            <if test="nameEn != null and nameEn != ''">nameEn = #{nameEn},</if>
+            <if test="fullnameEn != null and fullnameEn != ''">fullnameEn = #{fullnameEn},</if>
+            <if test="originalName != null and originalName != ''">originalName = #{originalName},</if>
+            <if test="originalFullname != null and originalFullname != ''">originalFullname = #{originalFullname},</if>
+            <if test="beginDate != null">beginDate = #{beginDate},</if>
+            <if test="endDate != null">endDate = #{endDate},</if>
+            <if test="flag != null">flag = #{flag},</if>
+            <if test="brief != null and brief != ''">brief = #{brief},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBasicCountryById" parameterType="Long">
+        delete from basic_country where id = #{id}
+    </delete>
+
+    <delete id="deleteBasicCountryByIds" parameterType="String">
+        delete from basic_country where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

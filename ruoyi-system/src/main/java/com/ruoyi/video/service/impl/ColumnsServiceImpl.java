@@ -53,7 +53,7 @@ public class ColumnsServiceImpl implements IColumnsService
     @Override
     public int insertColumns(Columns columns)
     {
-        columns.setCreateTime(DateUtils.getNowDate());
+
         return columnsMapper.insertColumns(columns);
     }
 

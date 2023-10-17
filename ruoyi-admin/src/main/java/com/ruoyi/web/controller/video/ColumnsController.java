@@ -2,6 +2,8 @@ package com.ruoyi.web.controller.video;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.utils.DateUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,6 +49,17 @@ public class ColumnsController extends BaseController
     }
 
     /**
+     * 查询栏目管理列表
+     */
+    @PreAuthorize("@ss.hasPermi('video:columns:list')")
+    @GetMapping("/all")
+    public AjaxResult all(Columns columns)
+    {
+        List<Columns> list = columnsService.selectColumnsList(columns);
+        return success(list);
+    }
+
+    /**
      * 导出栏目管理列表
      */
     @PreAuthorize("@ss.hasPermi('video:columns:export')")
@@ -77,6 +90,8 @@ public class ColumnsController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody Columns columns)
     {
+        columns.setCreateTime(DateUtils.getNowDate());
+        columns.setCreateBy(getUsername());
         return toAjax(columnsService.insertColumns(columns));
     }
 
