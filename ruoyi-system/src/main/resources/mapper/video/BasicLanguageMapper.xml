@@ -20,7 +20,6 @@
         <result property="updateBy"    column="update_by"    />
         <result property="remark"    column="remark"    />
         <result property="version"    column="version"    />
-        <result property="movieCount"    column="name"  />
         <association property="country" column="country_id" javaType="BasicCountry" resultMap="BasicCountryResult"/>
     </resultMap>
 

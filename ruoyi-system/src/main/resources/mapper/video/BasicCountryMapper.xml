@@ -56,6 +56,11 @@
         where id = #{id}
     </select>
 
+    <select id="selectBasicCountryByIds" parameterType="String" resultMap="BasicCountryResult">
+        <include refid="selectBasicCountryVo"/>
+        where FIND_IN_SET(id,#{country_ids})
+    </select>
+
     <insert id="insertBasicCountry" parameterType="BasicCountry" useGeneratedKeys="true" keyProperty="id">
         insert into basic_country
         <trim prefix="(" suffix=")" suffixOverrides=",">

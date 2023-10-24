@@ -47,6 +47,17 @@ public class BasicLanguageController extends BaseController
     }
 
     /**
+     * 查询基础数据-语言管理列表
+     */
+    @PreAuthorize("@ss.hasPermi('video:language:all')")
+    @GetMapping("/all")
+    public AjaxResult all(BasicLanguage basicLanguage)
+    {
+        List<BasicLanguage> list = basicLanguageService.selectBasicLanguageList(basicLanguage);
+        return success(list);
+    }
+
+    /**
      * 导出基础数据-语言管理列表
      */
     @PreAuthorize("@ss.hasPermi('video:language:export')")

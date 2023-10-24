@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.video;
 
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,29 @@ public class BasicCountryController extends BaseController
         List<BasicCountry> list = basicCountryService.selectBasicCountryList(basicCountry);
         return getDataTable(list);
     }
+
+    /**
+     * 查询国家管理列表
+     */
+    @PreAuthorize("@ss.hasPermi('web:country:all')")
+    @GetMapping("/all")
+    public AjaxResult all(BasicCountry basicCountry)
+    {
+        List<BasicCountry> list = basicCountryService.selectBasicCountryList(basicCountry);
+        return success(list);
+    }
+
+    /**
+     * 查询国家管理列表
+     */
+    @PreAuthorize("@ss.hasPermi('web:country:level')")
+    @GetMapping("/levels")
+    public AjaxResult levels()
+    {
+        List<Map> list = basicCountryService.selectBasicCountryListAndLevels();
+        return success(list);
+    }
+
 
     /**
      * 导出国家管理列表

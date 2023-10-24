@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.video.mapper.MovieBasicMapper">
+
+    <resultMap type="MovieBasic" id="MovieBasicResult">
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="version"    column="version"    />
+        <result property="id"    column="id"    />
+        <result property="status"    column="status"    />
+        <result property="releaseStatus"    column="release_status"    />
+        <result property="title"    column="title"    />
+        <result property="bgColor"    column="bg_color"    />
+        <result property="titleEn"    column="title_en"    />
+        <result property="titleOriginal"    column="title_original"    />
+        <result property="akas"    column="akas"    />
+        <result property="genres"    column="genres"    />
+        <result property="pubdate"    column="pubdate"    />
+        <result property="duration"    column="duration"    />
+        <result property="versions"    column="versions"    />
+        <result property="durations"    column="durations"    />
+        <result property="eggHunt"    column="egg_hunt"    />
+        <result property="color"    column="color"    />
+        <result property="seasonCount"    column="season_count"    />
+        <result property="currentSeason"    column="current_season"    />
+        <result property="episodeCount"    column="episode_count"    />
+        <result property="currentEpisode"    column="current_episode"    />
+        <result property="theEnd"    column="the_end"    />
+        <result property="countryIds"    column="country_ids"    />
+        <result property="languages"    column="languages"    />
+        <result property="tags"    column="tags"    />
+        <result property="summary"    column="summary"    />
+        <result property="year"    column="year"    />
+        <result property="poster"    column="poster"    />
+        <result property="releaseDate"    column="release_date"    />
+        <result property="columnValue"    column="column_value"    />
+        <collection property="country" javaType="java.util.List" column="country_ids" select="com.ruoyi.video.mapper.BasicCountryMapper.selectBasicCountryByIds"/>
+    </resultMap>
+
+    <sql id="selectMovieBasicVo">
+        select create_time, update_time, create_by, update_by, remark, version, id, status, release_status, title, bg_color, title_en, title_original, akas, genres, pubdate, duration, versions, durations, egg_hunt, color, season_count, current_season, episode_count, current_episode, the_end, country_ids, languages, tags, summary, year, poster, release_date, column_value from movie_basic
+    </sql>
+
+    <select id="selectMovieBasicList" parameterType="MovieBasic" resultMap="MovieBasicResult">
+        <include refid="selectMovieBasicVo"/>
+        <where>
+            <if test="version != null "> and version = #{version}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="releaseStatus != null "> and release_status = #{releaseStatus}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="bgColor != null  and bgColor != ''"> and bg_color = #{bgColor}</if>
+            <if test="titleEn != null  and titleEn != ''"> and title_en = #{titleEn}</if>
+            <if test="titleOriginal != null  and titleOriginal != ''"> and title_original = #{titleOriginal}</if>
+            <if test="akas != null  and akas != ''"> and akas = #{akas}</if>
+            <if test="genres != null  and genres != ''"> and genres = #{genres}</if>
+            <if test="pubdate != null "> and pubdate = #{pubdate}</if>
+            <if test="duration != null  and duration != ''"> and duration = #{duration}</if>
+            <if test="versions != null  and versions != ''"> and versions = #{versions}</if>
+            <if test="durations != null  and durations != ''"> and durations = #{durations}</if>
+            <if test="eggHunt != null "> and egg_hunt = #{eggHunt}</if>
+            <if test="color != null "> and color = #{color}</if>
+            <if test="seasonCount != null "> and season_count = #{seasonCount}</if>
+            <if test="currentSeason != null "> and current_season = #{currentSeason}</if>
+            <if test="episodeCount != null "> and episode_count = #{episodeCount}</if>
+            <if test="currentEpisode != null "> and current_episode = #{currentEpisode}</if>
+            <if test="theEnd != null "> and the_end = #{theEnd}</if>
+            <if test="countryIds != null  and countryIds != ''"> and country_ids = #{countryIds}</if>
+            <if test="languages != null  and languages != ''"> and languages = #{languages}</if>
+            <if test="tags != null  and tags != ''"> and tags = #{tags}</if>
+            <if test="summary != null  and summary != ''"> and summary = #{summary}</if>
+            <if test="year != null "> and year = #{year}</if>
+            <if test="poster != null  and poster != ''"> and poster = #{poster}</if>
+            <if test="releaseDate != null  and releaseDate != ''"> and release_date = #{releaseDate}</if>
+            <if test="columnValue != null  and columnValue != ''"> and column_value = #{columnValue}</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectMovieBasicById" parameterType="Long" resultMap="MovieBasicResult">
+        <include refid="selectMovieBasicVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertMovieBasic" parameterType="MovieBasic" useGeneratedKeys="true" keyProperty="id">
+        insert into movie_basic
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            <if test="version != null">version,</if>
+            <if test="status != null">status,</if>
+            <if test="releaseStatus != null">release_status,</if>
+            <if test="title != null">title,</if>
+            <if test="bgColor != null">bg_color,</if>
+            <if test="titleEn != null">title_en,</if>
+            <if test="titleOriginal != null">title_original,</if>
+            <if test="akas != null">akas,</if>
+            <if test="genres != null">genres,</if>
+            <if test="pubdate != null">pubdate,</if>
+            <if test="duration != null">duration,</if>
+            <if test="versions != null">versions,</if>
+            <if test="durations != null">durations,</if>
+            <if test="eggHunt != null">egg_hunt,</if>
+            <if test="color != null">color,</if>
+            <if test="seasonCount != null">season_count,</if>
+            <if test="currentSeason != null">current_season,</if>
+            <if test="episodeCount != null">episode_count,</if>
+            <if test="currentEpisode != null">current_episode,</if>
+            <if test="theEnd != null">the_end,</if>
+            <if test="countryIds != null">country_ids,</if>
+            <if test="languages != null">languages,</if>
+            <if test="tags != null">tags,</if>
+            <if test="summary != null">summary,</if>
+            <if test="year != null">year,</if>
+            <if test="poster != null">poster,</if>
+            <if test="releaseDate != null">release_date,</if>
+            <if test="columnValue != null and columnValue != ''">column_value,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="version != null">#{version},</if>
+            <if test="status != null">#{status},</if>
+            <if test="releaseStatus != null">#{releaseStatus},</if>
+            <if test="title != null">#{title},</if>
+            <if test="bgColor != null">#{bgColor},</if>
+            <if test="titleEn != null">#{titleEn},</if>
+            <if test="titleOriginal != null">#{titleOriginal},</if>
+            <if test="akas != null">#{akas},</if>
+            <if test="genres != null">#{genres},</if>
+            <if test="pubdate != null">#{pubdate},</if>
+            <if test="duration != null">#{duration},</if>
+            <if test="versions != null">#{versions},</if>
+            <if test="durations != null">#{durations},</if>
+            <if test="eggHunt != null">#{eggHunt},</if>
+            <if test="color != null">#{color},</if>
+            <if test="seasonCount != null">#{seasonCount},</if>
+            <if test="currentSeason != null">#{currentSeason},</if>
+            <if test="episodeCount != null">#{episodeCount},</if>
+            <if test="currentEpisode != null">#{currentEpisode},</if>
+            <if test="theEnd != null">#{theEnd},</if>
+            <if test="countryIds != null">#{countryIds},</if>
+            <if test="languages != null">#{languages},</if>
+            <if test="tags != null">#{tags},</if>
+            <if test="summary != null">#{summary},</if>
+            <if test="year != null">#{year},</if>
+            <if test="poster != null">#{poster},</if>
+            <if test="releaseDate != null">#{releaseDate},</if>
+            <if test="columnValue != null and columnValue != ''">#{columnValue},</if>
+        </trim>
+    </insert>
+
+    <update id="updateMovieBasic" parameterType="MovieBasic">
+        update movie_basic
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="releaseStatus != null">release_status = #{releaseStatus},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="bgColor != null">bg_color = #{bgColor},</if>
+            <if test="titleEn != null">title_en = #{titleEn},</if>
+            <if test="titleOriginal != null">title_original = #{titleOriginal},</if>
+            <if test="akas != null">akas = #{akas},</if>
+            <if test="genres != null">genres = #{genres},</if>
+            <if test="pubdate != null">pubdate = #{pubdate},</if>
+            <if test="duration != null">duration = #{duration},</if>
+            <if test="versions != null">versions = #{versions},</if>
+            <if test="durations != null">durations = #{durations},</if>
+            <if test="eggHunt != null">egg_hunt = #{eggHunt},</if>
+            <if test="color != null">color = #{color},</if>
+            <if test="seasonCount != null">season_count = #{seasonCount},</if>
+            <if test="currentSeason != null">current_season = #{currentSeason},</if>
+            <if test="episodeCount != null">episode_count = #{episodeCount},</if>
+            <if test="currentEpisode != null">current_episode = #{currentEpisode},</if>
+            <if test="theEnd != null">the_end = #{theEnd},</if>
+            <if test="countryIds != null">country_ids = #{countryIds},</if>
+            <if test="languages != null">languages = #{languages},</if>
+            <if test="tags != null">tags = #{tags},</if>
+            <if test="summary != null">summary = #{summary},</if>
+            <if test="year != null">year = #{year},</if>
+            <if test="poster != null">poster = #{poster},</if>
+            <if test="releaseDate != null">release_date = #{releaseDate},</if>
+            <if test="columnValue != null and columnValue != ''">column_value = #{columnValue},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMovieBasicById" parameterType="Long">
+        delete from movie_basic where id = #{id}
+    </delete>
+
+    <delete id="deleteMovieBasicByIds" parameterType="String">
+        delete from movie_basic where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
