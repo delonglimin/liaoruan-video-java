@@ -35,7 +35,7 @@
             <if test="height != null "> and height = #{height}</if>
             <if test="width != null "> and width = #{width}</if>
             <if test="poster != null  and poster != ''"> and poster = #{poster}</if>
-            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="title != null  and title != ''"> and title like concat('%', #{title}, '%')</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="path != null  and path != ''"> and path = #{path}</if>
             <if test="duration != null "> and duration = #{duration}</if>

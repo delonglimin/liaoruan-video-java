@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.video.mapper.MoviePubDateMapper">
+
+    <resultMap type="MoviePubDate" id="MoviePubDateResult">
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="version"    column="version"    />
+        <result property="id"    column="id"    />
+        <result property="pubDate"    column="pub_date"    />
+        <result property="countryId"    column="country_id"    />
+        <result property="movieId"    column="movie_id"    />
+        <result property="premiere"    column="premiere"    />
+        <association property="country" column="country_id" javaType="BasicCountry" resultMap="BasicCountryResult"/>
+    </resultMap>
+
+    <resultMap type="BasicCountry" id="BasicCountryResult">
+        <result property="id"    column="country_id"    />
+        <result property="name"    column="country_name"    />
+        <result property="fullname"    column="country_fullname"    />
+    </resultMap>
+
+    <sql id="selectMoviePubDateVo">
+        select create_time, update_time, create_by, update_by, remark, version, id, pub_date, country_id, movie_id, premiere from movie_pub_date
+    </sql>
+
+    <select id="selectMoviePubDateList" parameterType="MoviePubDate" resultMap="MoviePubDateResult">
+        select l.id, l.pub_date, l.country_id, l.movie_id, l.premiere,  l.remark, c.name country_name,c.fullname country_fullname,c.id country_id
+        from movie_pub_date l
+        left join basic_country c on l.country_id = c.id
+        <where>
+            <if test="version != null "> and version = #{version}</if>
+            <if test="pubDate != null "> and pub_date = #{pubDate}</if>
+            <if test="countryId != null "> and country_id = #{countryId}</if>
+            <if test="movieId != null "> and movie_id = #{movieId}</if>
+            <if test="premiere != null  and premiere != ''"> and premiere = #{premiere}</if>
+        </where>
+    </select>
+
+    <select id="selectMoviePubDateById" parameterType="Long" resultMap="MoviePubDateResult">
+        <include refid="selectMoviePubDateVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertMoviePubDate" parameterType="MoviePubDate" useGeneratedKeys="true" keyProperty="id">
+        insert into movie_pub_date
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            <if test="version != null">version,</if>
+            <if test="pubDate != null">pub_date,</if>
+            <if test="countryId != null">country_id,</if>
+            <if test="movieId != null">movie_id,</if>
+            <if test="premiere != null">premiere,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="version != null">#{version},</if>
+            <if test="pubDate != null">#{pubDate},</if>
+            <if test="countryId != null">#{countryId},</if>
+            <if test="movieId != null">#{movieId},</if>
+            <if test="premiere != null">#{premiere},</if>
+        </trim>
+    </insert>
+
+    <update id="updateMoviePubDate" parameterType="MoviePubDate">
+        update movie_pub_date
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="pubDate != null">pub_date = #{pubDate},</if>
+            <if test="countryId != null">country_id = #{countryId},</if>
+            <if test="movieId != null">movie_id = #{movieId},</if>
+            <if test="premiere != null">premiere = #{premiere},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMoviePubDateById" parameterType="Long">
+        delete from movie_pub_date where id = #{id}
+    </delete>
+
+    <delete id="deleteMoviePubDateByIds" parameterType="String">
+        delete from movie_pub_date where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

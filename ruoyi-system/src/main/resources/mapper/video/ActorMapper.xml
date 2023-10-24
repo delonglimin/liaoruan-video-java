@@ -43,7 +43,7 @@
         <where>
             <if test="version != null "> and version = #{version}</if>
             <if test="avatar != null  and avatar != ''"> and avatar = #{avatar}</if>
-            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="name != null  and name != ''"> and a.name like concat('%', #{name}, '%')</if>
             <if test="nameEn != null  and nameEn != ''"> and name_en = #{nameEn}</if>
             <if test="nameMore != null  and nameMore != ''"> and name_more = #{nameMore}</if>
             <if test="nameEnMore != null  and nameEnMore != ''"> and name_en_more = #{nameEnMore}</if>

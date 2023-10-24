@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.video.mapper.MovieLevelMapper">
+
+    <resultMap type="MovieLevel" id="MovieLevelResult">
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="version"    column="version"    />
+        <result property="id"    column="id"    />
+        <result property="movieId"    column="movie_id"    />
+        <result property="levelId"    column="level_id"    />
+    </resultMap>
+
+    <sql id="selectMovieLevelVo">
+        select create_time, update_time, create_by, update_by, remark, version, id, movie_id, level_id from movie_level
+    </sql>
+
+    <select id="selectMovieLevelList" parameterType="MovieLevel" resultMap="MovieLevelResult">
+        <include refid="selectMovieLevelVo"/>
+        <where>
+            <if test="version != null "> and version = #{version}</if>
+            <if test="movieId != null "> and movie_id = #{movieId}</if>
+            <if test="levelId != null "> and level_id = #{levelId}</if>
+        </where>
+    </select>
+
+    <select id="selectMovieLevelById" parameterType="Long" resultMap="MovieLevelResult">
+        <include refid="selectMovieLevelVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertMovieLevel" parameterType="MovieLevel" useGeneratedKeys="true" keyProperty="id">
+        insert into movie_level
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            <if test="version != null">version,</if>
+            <if test="movieId != null">movie_id,</if>
+            <if test="levelId != null">level_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="version != null">#{version},</if>
+            <if test="movieId != null">#{movieId},</if>
+            <if test="levelId != null">#{levelId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateMovieLevel" parameterType="MovieLevel">
+        update movie_level
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="movieId != null">movie_id = #{movieId},</if>
+            <if test="levelId != null">level_id = #{levelId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMovieLevelById" parameterType="Long">
+        delete from movie_level where id = #{id}
+    </delete>
+
+    <delete id="deleteMovieLevelByIds" parameterType="String">
+        delete from movie_level where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

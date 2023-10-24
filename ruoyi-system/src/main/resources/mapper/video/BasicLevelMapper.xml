@@ -51,7 +51,7 @@
         select a.id, a.country_id, a.level, a.level_zh, a.create_time, a.update_time, a.create_by, a.update_by, a.remark, a.version, a.status, a.descript,
         c.name country_name,c.fullname country_fullname,c.id country_id
         from basic_level a
-        left join basic_country b on b.id = a.country_id
+        left join basic_country c on c.id = a.country_id
         <where>
            and a.id = #{id}
         </where>

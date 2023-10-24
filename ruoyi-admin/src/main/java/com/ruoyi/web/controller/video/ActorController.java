@@ -1,4 +1,4 @@
-package com.ruoyi.video.controller;
+package com.ruoyi.web.controller.video;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +41,20 @@ public class ActorController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(Actor actor)
     {
+        startPage();
+        List<Actor> list = actorService.selectActorList(actor);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询影人列表
+     */
+    @PreAuthorize("@ss.hasPermi('video:actor:list')")
+    @GetMapping("/all")
+    public TableDataInfo all(String keyword)
+    {
+        Actor actor = new Actor();
+        actor.setName(keyword);
         startPage();
         List<Actor> list = actorService.selectActorList(actor);
         return getDataTable(list);
