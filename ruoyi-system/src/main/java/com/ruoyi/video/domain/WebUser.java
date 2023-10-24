@@ -44,6 +44,10 @@ public class WebUser extends BaseEntity
     @Excel(name = "最后登录IP")
     private String loginIp;
 
+    /** 收藏数 */
+    @Excel(name = "收藏数")
+    private String userCollectCount;
+
     /** 最后登录时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "最后登录时间", width = 30, dateFormat = "yyyy-MM-dd")
@@ -122,6 +126,8 @@ public class WebUser extends BaseEntity
         return loginDate;
     }
 
+
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -139,5 +145,13 @@ public class WebUser extends BaseEntity
                 .append("loginIp", getLoginIp())
                 .append("loginDate", getLoginDate())
                 .toString();
+    }
+
+    public String getUserCollectCount() {
+        return userCollectCount;
+    }
+
+    public void setUserCollectCount(String userCollectCount) {
+        this.userCollectCount = userCollectCount;
     }
 }
