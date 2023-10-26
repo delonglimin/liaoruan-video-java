@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.video.mapper.ActorMapper">
+
+    <resultMap type="Actor" id="ActorResult">
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="version"    column="version"    />
+        <result property="id"    column="id"    />
+        <result property="avatar"    column="avatar"    />
+        <result property="name"    column="name"    />
+        <result property="nameEn"    column="name_en"    />
+        <result property="nameMore"    column="name_more"    />
+        <result property="nameEnMore"    column="name_en_more"    />
+        <result property="birthday"    column="birthday"    />
+        <result property="deathDay"    column="death_day"    />
+        <result property="bornPlace"    column="born_place"    />
+        <result property="brief"    column="brief"    />
+        <result property="gender"    column="gender"    />
+        <result property="countryId"    column="country_id"    />
+        <association property="country" column="country_id" javaType="BasicCountry" resultMap="BasicCountryResult"/>
+    </resultMap>
+    <resultMap type="BasicCountry" id="BasicCountryResult">
+        <result property="id"    column="country_id"    />
+        <result property="name"    column="country_name"    />
+        <result property="fullname"    column="country_fullname"    />
+    </resultMap>
+
+    <sql id="selectActorVo">
+        select create_time, update_time, create_by, update_by, remark, version, id, avatar, name, name_en, name_more, name_en_more, birthday, death_day, born_place, brief, gender, country_id from actor
+    </sql>
+
+    <select id="selectActorList" parameterType="Actor" resultMap="ActorResult">
+        select a.create_time, a.update_time, a.create_by, a.update_by, a.remark, a.version, a.id, a.avatar, a.name, a.name_en, a.name_more, a.name_en_more, a.birthday, a.death_day, a.born_place, a.brief, a.gender, a.country_id,
+        c.name country_name,c.fullname country_fullname,c.id country_id
+        from actor a
+        left join basic_country c on c.id = a.country_id
+        <where>
+            <if test="version != null "> and version = #{version}</if>
+            <if test="avatar != null  and avatar != ''"> and avatar = #{avatar}</if>
+            <if test="name != null  and name != ''"> and a.name like concat('%', #{name}, '%')</if>
+            <if test="nameEn != null  and nameEn != ''"> and name_en = #{nameEn}</if>
+            <if test="nameMore != null  and nameMore != ''"> and name_more = #{nameMore}</if>
+            <if test="nameEnMore != null  and nameEnMore != ''"> and name_en_more = #{nameEnMore}</if>
+            <if test="birthday != null "> and birthday = #{birthday}</if>
+            <if test="deathDay != null "> and death_day = #{deathDay}</if>
+            <if test="bornPlace != null  and bornPlace != ''"> and born_place = #{bornPlace}</if>
+            <if test="brief != null  and brief != ''"> and brief = #{brief}</if>
+            <if test="gender != null  and gender != ''"> and gender = #{gender}</if>
+            <if test="countryId != null "> and country_id = #{countryId}</if>
+        </where>
+    </select>
+
+    <select id="selectActorById" parameterType="Long" resultMap="ActorResult">
+        <include refid="selectActorVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertActor" parameterType="Actor" useGeneratedKeys="true" keyProperty="id">
+        insert into actor
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            <if test="version != null">version,</if>
+            <if test="avatar != null">avatar,</if>
+            <if test="name != null">name,</if>
+            <if test="nameEn != null">name_en,</if>
+            <if test="nameMore != null">name_more,</if>
+            <if test="nameEnMore != null">name_en_more,</if>
+            <if test="birthday != null">birthday,</if>
+            <if test="deathDay != null">death_day,</if>
+            <if test="bornPlace != null">born_place,</if>
+            <if test="brief != null">brief,</if>
+            <if test="gender != null">gender,</if>
+            <if test="countryId != null">country_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="version != null">#{version},</if>
+            <if test="avatar != null">#{avatar},</if>
+            <if test="name != null">#{name},</if>
+            <if test="nameEn != null">#{nameEn},</if>
+            <if test="nameMore != null">#{nameMore},</if>
+            <if test="nameEnMore != null">#{nameEnMore},</if>
+            <if test="birthday != null">#{birthday},</if>
+            <if test="deathDay != null">#{deathDay},</if>
+            <if test="bornPlace != null">#{bornPlace},</if>
+            <if test="brief != null">#{brief},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="countryId != null">#{countryId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateActor" parameterType="Actor">
+        update actor
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="nameEn != null">name_en = #{nameEn},</if>
+            <if test="nameMore != null">name_more = #{nameMore},</if>
+            <if test="nameEnMore != null">name_en_more = #{nameEnMore},</if>
+            <if test="birthday != null">birthday = #{birthday},</if>
+            <if test="deathDay != null">death_day = #{deathDay},</if>
+            <if test="bornPlace != null">born_place = #{bornPlace},</if>
+            <if test="brief != null">brief = #{brief},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="countryId != null">country_id = #{countryId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteActorById" parameterType="Long">
+        delete from actor where id = #{id}
+    </delete>
+
+    <delete id="deleteActorByIds" parameterType="String">
+        delete from actor where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

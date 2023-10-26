@@ -1,7 +1,13 @@
 package com.ruoyi.video.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.video.domain.BasicLevel;
+import com.ruoyi.video.mapper.BasicLevelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.video.mapper.BasicCountryMapper;
@@ -19,6 +25,9 @@ public class BasicCountryServiceImpl implements IBasicCountryService
 {
     @Autowired
     private BasicCountryMapper basicCountryMapper;
+
+    @Autowired
+    private BasicLevelMapper basicLevelMapper;
 
     /**
      * 查询国家管理
@@ -42,6 +51,24 @@ public class BasicCountryServiceImpl implements IBasicCountryService
     public List<BasicCountry> selectBasicCountryList(BasicCountry basicCountry)
     {
         return basicCountryMapper.selectBasicCountryList(basicCountry);
+    }
+
+    @Override
+    public  List<Map> selectBasicCountryListAndLevels() {
+        List<BasicCountry> temp =  basicCountryMapper.selectBasicCountryList(new BasicCountry());
+        List<Map>  res = new ArrayList<>();
+        for (int i = 0; i < temp.size(); i++) {
+            BasicCountry bc = temp.get(i);
+            BasicLevel l = new BasicLevel();
+            l.setCountryId(bc.getId());
+            List<BasicLevel> ll = basicLevelMapper.selectBasicLevelList(l);
+            Map<Object, Object> t = new HashMap<>();
+            t.put("id",bc.getId());
+            t.put("name",bc.getName());
+            t.put("children",ll);
+            res.add(t);
+        }
+        return res;
     }
 
     /**

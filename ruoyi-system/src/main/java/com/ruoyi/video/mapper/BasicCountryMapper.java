@@ -58,4 +58,12 @@ public interface BasicCountryMapper
      * @return 结果
      */
     public int deleteBasicCountryByIds(Long[] ids);
+
+
+    /**
+     *
+     * @return
+     */
+    public List<BasicCountry> selectBasicCountryListAndLevels();
+
 }

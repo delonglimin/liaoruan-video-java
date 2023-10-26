@@ -47,6 +47,17 @@ public class BasicGenreController extends BaseController
     }
 
     /**
+     * 查询基础数据-类型管理列表
+     */
+    @PreAuthorize("@ss.hasPermi('video:genre:all')")
+    @GetMapping("/all")
+    public AjaxResult all(BasicGenre basicGenre)
+    {
+        List<BasicGenre> list = basicGenreService.selectBasicGenreList(basicGenre);
+        return success(list);
+    }
+
+    /**
      * 导出基础数据-类型管理列表
      */
     @PreAuthorize("@ss.hasPermi('video:genre:export')")

@@ -1,6 +1,8 @@
 package com.ruoyi.video.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.video.domain.BasicCountry;
 
 /**
@@ -26,6 +28,14 @@ public interface IBasicCountryService
      * @return 国家管理集合
      */
     public List<BasicCountry> selectBasicCountryList(BasicCountry basicCountry);
+
+
+    /**
+     * 查询国家管理列表
+     *
+     * @return 国家管理集合
+     */
+    public List<Map> selectBasicCountryListAndLevels();
 
     /**
      * 新增国家管理

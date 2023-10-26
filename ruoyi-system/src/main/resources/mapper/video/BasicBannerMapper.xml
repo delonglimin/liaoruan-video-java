@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.video.mapper.BasicBannerMapper">
+
+    <resultMap type="BasicBanner" id="BasicBannerResult">
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="version"    column="version"    />
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="url"    column="url"    />
+        <result property="img"    column="img"    />
+        <result property="urlType"    column="urlType"    />
+    </resultMap>
+
+    <sql id="selectBasicBannerVo">
+        select create_time, update_time, create_by, update_by, remark, version, id, title, url, img, urlType from basic_banner
+    </sql>
+
+    <select id="selectBasicBannerList" parameterType="BasicBanner" resultMap="BasicBannerResult">
+        <include refid="selectBasicBannerVo"/>
+        <where>
+            <if test="version != null "> and version = #{version}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="img != null  and img != ''"> and img = #{img}</if>
+            <if test="urlType != null  and urlType != ''"> and urlType = #{urlType}</if>
+        </where>
+    </select>
+
+    <select id="selectBasicBannerById" parameterType="Long" resultMap="BasicBannerResult">
+        <include refid="selectBasicBannerVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBasicBanner" parameterType="BasicBanner" useGeneratedKeys="true" keyProperty="id">
+        insert into basic_banner
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            <if test="version != null">version,</if>
+            <if test="title != null">title,</if>
+            <if test="url != null">url,</if>
+            <if test="img != null">img,</if>
+            <if test="urlType != null">urlType,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="version != null">#{version},</if>
+            <if test="title != null">#{title},</if>
+            <if test="url != null">#{url},</if>
+            <if test="img != null">#{img},</if>
+            <if test="urlType != null">#{urlType},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBasicBanner" parameterType="BasicBanner">
+        update basic_banner
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="img != null">img = #{img},</if>
+            <if test="urlType != null">urlType = #{urlType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBasicBannerById" parameterType="Long">
+        delete from basic_banner where id = #{id}
+    </delete>
+
+    <delete id="deleteBasicBannerByIds" parameterType="String">
+        delete from basic_banner where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

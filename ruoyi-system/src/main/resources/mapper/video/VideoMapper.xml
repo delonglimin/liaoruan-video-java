@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.video.mapper.VideoMapper">
+
+    <resultMap type="Video" id="VideoResult">
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="version"    column="version"    />
+        <result property="id"    column="id"    />
+        <result property="url"    column="url"    />
+        <result property="height"    column="height"    />
+        <result property="width"    column="width"    />
+        <result property="poster"    column="poster"    />
+        <result property="title"    column="title"    />
+        <result property="name"    column="name"    />
+        <result property="path"    column="path"    />
+        <result property="duration"    column="duration"    />
+        <result property="size"    column="size"    />
+    </resultMap>
+
+    <sql id="selectVideoVo">
+        select create_time, update_time, create_by, update_by, remark, version, id, url, height, width, poster, title, name, path, duration, size from video
+    </sql>
+
+    <select id="selectVideoList" parameterType="Video" resultMap="VideoResult">
+        <include refid="selectVideoVo"/>
+        <where>
+            <if test="version != null "> and version = #{version}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="height != null "> and height = #{height}</if>
+            <if test="width != null "> and width = #{width}</if>
+            <if test="poster != null  and poster != ''"> and poster = #{poster}</if>
+            <if test="title != null  and title != ''"> and title like concat('%', #{title}, '%')</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="path != null  and path != ''"> and path = #{path}</if>
+            <if test="duration != null "> and duration = #{duration}</if>
+            <if test="size != null "> and size = #{size}</if>
+        </where>
+    </select>
+
+    <select id="selectVideoById" parameterType="Long" resultMap="VideoResult">
+        <include refid="selectVideoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertVideo" parameterType="Video" useGeneratedKeys="true" keyProperty="id">
+        insert into video
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            <if test="version != null">version,</if>
+            <if test="url != null">url,</if>
+            <if test="height != null">height,</if>
+            <if test="width != null">width,</if>
+            <if test="poster != null">poster,</if>
+            <if test="title != null">title,</if>
+            <if test="name != null">name,</if>
+            <if test="path != null">path,</if>
+            <if test="duration != null">duration,</if>
+            <if test="size != null">size,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="version != null">#{version},</if>
+            <if test="url != null">#{url},</if>
+            <if test="height != null">#{height},</if>
+            <if test="width != null">#{width},</if>
+            <if test="poster != null">#{poster},</if>
+            <if test="title != null">#{title},</if>
+            <if test="name != null">#{name},</if>
+            <if test="path != null">#{path},</if>
+            <if test="duration != null">#{duration},</if>
+            <if test="size != null">#{size},</if>
+        </trim>
+    </insert>
+
+    <update id="updateVideo" parameterType="Video">
+        update video
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="height != null">height = #{height},</if>
+            <if test="width != null">width = #{width},</if>
+            <if test="poster != null">poster = #{poster},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="path != null">path = #{path},</if>
+            <if test="duration != null">duration = #{duration},</if>
+            <if test="size != null">size = #{size},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteVideoById" parameterType="Long">
+        delete from video where id = #{id}
+    </delete>
+
+    <delete id="deleteVideoByIds" parameterType="String">
+        delete from video where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
