@@ -26,7 +26,6 @@
         COUNT(c.movie_id) as userCollectCount
         from web_user u
         LEFT JOIN user_collect c ON  u.user_id = c.user_id GROUP BY u.user_id
-
     </sql>
 
     <select id="selectWebUserList" parameterType="WebUser" resultMap="WebUserResult">
