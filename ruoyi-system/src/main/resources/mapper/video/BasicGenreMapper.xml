@@ -16,21 +16,37 @@
         <result property="remark"    column="remark"    />
         <result property="version"    column="version"    />
         <result property="columnValue"    column="column_value"    />
+        <result property="count"    column="count"    />
     </resultMap>
 
     <sql id="selectBasicGenreVo">
         select id, name, name_en, status, create_time, update_time, create_by, update_by, remark, version, column_value from basic_genre
     </sql>
 
+<!--    <select id="selectBasicGenreList" parameterType="BasicGenre" resultMap="BasicGenreResult">-->
+<!--        <include refid="selectBasicGenreVo"/>-->
+<!--        <where>-->
+<!--            <if test="name != null  and name != ''"> and l.name like concat('%', #{name}, '%')</if>-->
+<!--            <if test="nameEn != null  and nameEn != ''"> and l.name_en = #{nameEn}</if>-->
+<!--            <if test="status != null "> and l.status = #{status}</if>-->
+<!--            <if test="columnValue != null  and columnValue != ''"> and l.column_value = #{columnValue}</if>-->
+<!--        </where>-->
+
+<!--    </select>-->
+
     <select id="selectBasicGenreList" parameterType="BasicGenre" resultMap="BasicGenreResult">
-        <include refid="selectBasicGenreVo"/>
+        select l.id, l.name, l.name_en, l.status, l.create_time, l.update_time, l.create_by, l.update_by, l.remark, l.version, l.column_value,
+        COUNT(b.id) as `count`
+        from basic_genre l
+        LEFT JOIN movie_basic as b ON FIND_IN_SET(l.`name`,b.genres)
         <where>
-            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
-            <if test="nameEn != null  and nameEn != ''"> and name_en = #{nameEn}</if>
-            <if test="status != null "> and status = #{status}</if>
-            <if test="version != null "> and version = #{version}</if>
-            <if test="columnValue != null  and columnValue != ''"> and column_value = #{columnValue}</if>
+            <if test="name != null  and name != ''"> and l.name like concat('%', #{name}, '%')</if>
+            <if test="nameEn != null  and nameEn != ''"> and l.name_en = #{nameEn}</if>
+            <if test="status != null "> and l.status = #{status}</if>
+            <if test="columnValue != null  and columnValue != ''"> and l.column_value = #{columnValue}</if>
         </where>
+        GROUP BY l.id
+
     </select>
 
     <select id="selectBasicGenreById" parameterType="Long" resultMap="BasicGenreResult">

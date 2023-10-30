@@ -37,6 +37,19 @@
         </where>
     </select>
 
+    <select id="selectBasicProfessionListContainsNum" parameterType="BasicProfession" resultMap="BasicProfessionResult">
+        <include refid="selectBasicProfessionVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="nameEn != null  and nameEn != ''"> and name_en = #{nameEn}</if>
+            <if test="version != null "> and version = #{version}</if>
+            <if test="parentId != null "> and parentId = #{parentId}</if>
+            <if test="mpath != null  and mpath != ''"> and mpath = #{mpath}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="brief != null  and brief != ''"> and brief = #{brief}</if>
+        </where>
+    </select>
+
     <select id="selectBasicProfessionById" parameterType="Long" resultMap="BasicProfessionResult">
         <include refid="selectBasicProfessionVo"/>
         where id = #{id}

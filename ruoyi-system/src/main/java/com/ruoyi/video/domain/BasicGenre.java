@@ -34,6 +34,18 @@ public class BasicGenre extends BaseEntity
     @Excel(name = "版本号")
     private Long version;
 
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
+    }
+
+    /** 影视数量 */
+    @Excel(name = "影视数量")
+    private String count;
+
     /** $column.columnComment */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private String columnValue;

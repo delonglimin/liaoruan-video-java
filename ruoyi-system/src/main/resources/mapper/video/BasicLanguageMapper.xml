@@ -20,6 +20,7 @@
         <result property="updateBy"    column="update_by"    />
         <result property="remark"    column="remark"    />
         <result property="version"    column="version"    />
+        <result property="movieCount"    column="movieCount"    />
         <association property="country" column="country_id" javaType="BasicCountry" resultMap="BasicCountryResult"/>
     </resultMap>
 
@@ -34,9 +35,12 @@
     </sql>
 
     <select id="selectBasicLanguageList" parameterType="BasicLanguage" resultMap="BasicLanguageResult">
-        select l.id, l.name, l.fullname, l.country_id, l.name_en, l.fullname_en, l.original_name, l.original_fullname, l.brief, l.create_time, l.update_time, l.create_by, l.update_by, l.remark, l.version, c.name country_name,c.fullname country_fullname,c.id country_id
+        select l.id, l.name, l.fullname, l.country_id, l.name_en, l.fullname_en, l.original_name, l.original_fullname, l.brief, l.create_time, l.update_time, l.create_by, l.update_by, l.remark, l.version, c.name country_name,c.fullname country_fullname,
+        count(b.id) as movieCount
         from basic_language l
         left join basic_country c on l.country_id = c.id
+        LEFT JOIN movie_basic as b ON FIND_IN_SET(l.`name`,b.languages)
+        group by l.id
         <where>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="fullname != null  and fullname != ''"> and fullname like concat('%', #{fullname}, '%')</if>
