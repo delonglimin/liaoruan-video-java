@@ -39,46 +39,56 @@
         <result property="poster"    column="poster"    />
         <result property="releaseDate"    column="release_date"    />
         <result property="columnValue"    column="column_value"    />
+        <result property="isPay"    column="is_pay"    />
+        <result property="paymentAmount"    column="payment_amount"    />
+        <result property="freeDuration"    column="free_duration"    />
+        <result property="userCollectsCount"    column="userCollectsCount"    />
+        <result property="movieVideosCount"    column="movieVideosCount"    />
+        <association property="movieRate" column="id" javaType="java.util.HashMap" select="com.ruoyi.video.mapper.UserRateMapper.selectUserRateByMovieId" />
         <collection property="country" javaType="java.util.List" column="country_ids" select="com.ruoyi.video.mapper.BasicCountryMapper.selectBasicCountryByIds"/>
     </resultMap>
 
+
     <sql id="selectMovieBasicVo">
-        select create_time, update_time, create_by, update_by, remark, version, id, status, release_status, title, bg_color, title_en, title_original, akas, genres, pubdate, duration, versions, durations, egg_hunt, color, season_count, current_season, episode_count, current_episode, the_end, country_ids, languages, tags, summary, year, poster, release_date, column_value from movie_basic
+        select create_time, update_time, create_by, update_by, remark, version, id, status, release_status, title, bg_color, title_en, title_original, akas, genres, pubdate, duration, versions, durations, egg_hunt, color, season_count, current_season, episode_count, current_episode, the_end, country_ids, languages, tags, summary, year, poster, release_date, column_value,is_pay,payment_amount,free_duration from movie_basic
     </sql>
 
     <select id="selectMovieBasicList" parameterType="MovieBasic" resultMap="MovieBasicResult">
-        <include refid="selectMovieBasicVo"/>
+        select b.create_time, b.update_time, b.create_by, b.update_by, b.remark, b.version, b.id, b.status, b.release_status, b.title, b.bg_color, b.title_en, b.title_original,b.akas, b.genres, b.pubdate, b.duration, b.versions, b.durations, b.egg_hunt, b.color, b.season_count, b.current_season, b.episode_count, b.current_episode, b.the_end, b.country_ids, b.languages, b.tags, b.summary, b.year, b.poster, b.release_date, b.column_value,b.is_pay,b.payment_amount,b.free_duration,
+        (SELECT COUNT(*) from movie_videos v where v.movie_id = b.id ) as movieVideosCount,
+        (SELECT COUNT(*) from user_collect c  where c.movie_id = b.id ) as userCollectsCount
+        from movie_basic b
+
         <where>
-            <if test="version != null "> and version = #{version}</if>
-            <if test="status != null "> and status = #{status}</if>
-            <if test="releaseStatus != null "> and release_status = #{releaseStatus}</if>
-            <if test="title != null  and title != ''"> and title = #{title}</if>
-            <if test="bgColor != null  and bgColor != ''"> and bg_color = #{bgColor}</if>
-            <if test="titleEn != null  and titleEn != ''"> and title_en = #{titleEn}</if>
-            <if test="titleOriginal != null  and titleOriginal != ''"> and title_original = #{titleOriginal}</if>
-            <if test="akas != null  and akas != ''"> and akas = #{akas}</if>
-            <if test="genres != null  and genres != ''"> and genres = #{genres}</if>
-            <if test="pubdate != null "> and pubdate = #{pubdate}</if>
-            <if test="duration != null  and duration != ''"> and duration = #{duration}</if>
-            <if test="versions != null  and versions != ''"> and versions = #{versions}</if>
-            <if test="durations != null  and durations != ''"> and durations = #{durations}</if>
-            <if test="eggHunt != null "> and egg_hunt = #{eggHunt}</if>
-            <if test="color != null "> and color = #{color}</if>
-            <if test="seasonCount != null "> and season_count = #{seasonCount}</if>
-            <if test="currentSeason != null "> and current_season = #{currentSeason}</if>
-            <if test="episodeCount != null "> and episode_count = #{episodeCount}</if>
-            <if test="currentEpisode != null "> and current_episode = #{currentEpisode}</if>
-            <if test="theEnd != null "> and the_end = #{theEnd}</if>
-            <if test="countryIds != null  and countryIds != ''"> and country_ids = #{countryIds}</if>
-            <if test="languages != null  and languages != ''"> and languages = #{languages}</if>
-            <if test="tags != null  and tags != ''"> and tags = #{tags}</if>
-            <if test="summary != null  and summary != ''"> and summary = #{summary}</if>
-            <if test="year != null "> and year = #{year}</if>
-            <if test="poster != null  and poster != ''"> and poster = #{poster}</if>
-            <if test="releaseDate != null  and releaseDate != ''"> and release_date = #{releaseDate}</if>
-            <if test="columnValue != null  and columnValue != ''"> and column_value = #{columnValue}</if>
+            <if test="status != null "> and b.status = #{status}</if>
+            <if test="releaseStatus != null "> and b.release_status = #{releaseStatus}</if>
+            <if test="title != null  and title != ''"> and b.title = #{title}</if>
+            <if test="bgColor != null  and bgColor != ''"> and b.bg_color = #{bgColor}</if>
+            <if test="titleEn != null  and titleEn != ''"> and b.title_en = #{titleEn}</if>
+            <if test="titleOriginal != null  and titleOriginal != ''"> and b.title_original = #{titleOriginal}</if>
+            <if test="akas != null  and akas != ''"> and b.akas = #{akas}</if>
+            <if test="genres != null  and genres != ''"> and b.genres = #{genres}</if>
+            <if test="pubdate != null "> and b.pubdate = #{pubdate}</if>
+            <if test="duration != null  and duration != ''"> and b.duration = #{duration}</if>
+            <if test="versions != null  and versions != ''"> and b.versions = #{versions}</if>
+            <if test="durations != null  and durations != ''"> and b.durations = #{durations}</if>
+            <if test="eggHunt != null "> and b.egg_hunt = #{eggHunt}</if>
+            <if test="color != null "> and b.color = #{color}</if>
+            <if test="seasonCount != null "> and b.season_count = #{seasonCount}</if>
+            <if test="currentSeason != null "> and b.current_season = #{currentSeason}</if>
+            <if test="episodeCount != null "> and b.episode_count = #{episodeCount}</if>
+            <if test="currentEpisode != null "> and b.current_episode = #{currentEpisode}</if>
+            <if test="theEnd != null "> and b.the_end = #{theEnd}</if>
+            <if test="countryIds != null  and countryIds != ''"> and b.country_ids = #{countryIds}</if>
+            <if test="languages != null  and languages != ''"> and b.languages = #{languages}</if>
+            <if test="tags != null  and tags != ''"> and b.tags = #{tags}</if>
+            <if test="summary != null  and summary != ''"> and b.summary = #{summary}</if>
+            <if test="year != null "> and b.year = #{year}</if>
+            <if test="poster != null  and poster != ''"> and b.poster = #{poster}</if>
+            <if test="releaseDate != null  and releaseDate != ''"> and b.release_date = #{releaseDate}</if>
+            <if test="columnValue != null  and columnValue != ''"> and b.column_value = #{columnValue}</if>
         </where>
-        order by create_time desc
+        order by b.create_time desc
     </select>
 
     <select id="selectMovieBasicById" parameterType="Long" resultMap="MovieBasicResult">
@@ -122,6 +132,9 @@
             <if test="poster != null">poster,</if>
             <if test="releaseDate != null">release_date,</if>
             <if test="columnValue != null and columnValue != ''">column_value,</if>
+            <if test="isPay != null">is_pay,</if>
+            <if test="freeDuration != null">#{free_duration},</if>
+            <if test="paymentAmount != null">#{payment_amount},</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="createTime != null">#{createTime},</if>
@@ -157,6 +170,10 @@
             <if test="poster != null">#{poster},</if>
             <if test="releaseDate != null">#{releaseDate},</if>
             <if test="columnValue != null and columnValue != ''">#{columnValue},</if>
+            <if test="isPay != null">#{isPay},</if>
+            <if test="isPay != null">#{isPay},</if>
+            <if test="freeDuration != null">#{freeDuration},</if>
+            <if test="paymentAmount != null">#{paymentAmount},</if>
         </trim>
     </insert>
 
@@ -196,6 +213,10 @@
             <if test="poster != null">poster = #{poster},</if>
             <if test="releaseDate != null">release_date = #{releaseDate},</if>
             <if test="columnValue != null and columnValue != ''">column_value = #{columnValue},</if>
+
+            <if test="isPay != null">is_pay = #{isPay},</if>
+            <if test="freeDuration != null">free_duration = #{freeDuration},</if>
+            <if test="paymentAmount != null">payment_amount = #{paymentAmount},</if>
         </trim>
         where id = #{id}
     </update>

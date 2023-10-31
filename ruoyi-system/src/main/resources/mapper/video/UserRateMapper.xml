@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.video.mapper.UserRateMapper">
+
+    <resultMap type="UserRate" id="UserRateResult">
+        <result property="userId"    column="user_id"    />
+        <result property="movieId"    column="movie_id"    />
+        <result property="rate"    column="rate"    />
+        <result property="id"    column="id"    />
+        <result property="coment"    column="coment"    />
+    </resultMap>
+
+
+
+
+
+    <sql id="selectUserRateVo">
+        select user_id, movie_id, rate, id, coment from user_rate
+    </sql>
+
+    <select id="selectUserRateList" parameterType="UserRate" resultMap="UserRateResult">
+        <include refid="selectUserRateVo"/>
+        <where>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="movieId != null "> and movie_id = #{movieId}</if>
+            <if test="rate != null "> and rate = #{rate}</if>
+            <if test="coment != null  and coment != ''"> and coment like concat('%', #{coment}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectUserRateById" parameterType="Long" resultMap="UserRateResult">
+        <include refid="selectUserRateVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectUserRateByMovieId" parameterType="Long" resultType="java.util.HashMap">
+        SELECT COUNT(a.id) as rateUserCount, AVG(a.rate) as rate from user_rate a
+        where a.movie_id = #{id}
+        GROUP BY a.movie_id
+    </select>
+
+    <insert id="insertUserRate" parameterType="UserRate" useGeneratedKeys="true" keyProperty="id">
+        insert into user_rate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="movieId != null">movie_id,</if>
+            <if test="rate != null">rate,</if>
+            <if test="coment != null">coment,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="movieId != null">#{movieId},</if>
+            <if test="rate != null">#{rate},</if>
+            <if test="coment != null">#{coment},</if>
+        </trim>
+    </insert>
+
+    <update id="updateUserRate" parameterType="UserRate">
+        update user_rate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="movieId != null">movie_id = #{movieId},</if>
+            <if test="rate != null">rate = #{rate},</if>
+            <if test="coment != null">coment = #{coment},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserRateById" parameterType="Long">
+        delete from user_rate where id = #{id}
+    </delete>
+
+    <delete id="deleteUserRateByIds" parameterType="String">
+        delete from user_rate where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

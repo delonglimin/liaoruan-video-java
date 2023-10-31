@@ -19,10 +19,13 @@
         <result property="loginIp"    column="login_ip"    />
         <result property="loginDate"    column="login_date"    />
         <result property="userCollectCount"    column="userCollectCount"    />
+        <result property="memberType"    column="member_type"    />
+        <result property="walletGold"    column="wallet_gold"    />
+        <result property="expireTime"    column="expire_time"    />
     </resultMap>
 
     <sql id="selectWebUserVo">
-        select u.create_time, u.update_time, u.create_by, u.update_by, u.remark, u.version, u.user_id, u.email, u.password, u.salt, u.status, u.login_ip, u.login_date,
+        select u.create_time, u.update_time, u.create_by, u.update_by, u.remark, u.version, u.user_id, u.email, u.password, u.salt, u.status, u.login_ip, u.login_date,u.member_type,u.wallet_gold,u.expire_time,
         COUNT(c.movie_id) as userCollectCount
         from web_user u
         LEFT JOIN user_collect c ON  u.user_id = c.user_id GROUP BY u.user_id

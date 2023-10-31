@@ -43,6 +43,7 @@ public class MovieBasicController extends BaseController
     {
         startPage();
         List<MovieBasic> list = movieBasicService.selectMovieBasicList(movieBasic);
+
         return getDataTable(list);
     }
 

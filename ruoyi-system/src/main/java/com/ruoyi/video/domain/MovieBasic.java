@@ -1,6 +1,7 @@
 package com.ruoyi.video.domain;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -135,9 +136,90 @@ public class MovieBasic extends BaseEntity
     @Excel(name = "影视分类")
     private String columnValue;
 
+    /** 是否付费 */
+    @Excel(name = "是否付费")
+    private Long isPay;
+
+    /** 视频数量 */
+    @Excel(name = "视频数量")
+    private Long movieVideosCount;
+    /** 收藏数量 */
+    @Excel(name = "收藏数量")
+    private Long userCollectsCount;
+
+
+
+    /** 所需价格 */
+    @Excel(name = "所需价格")
+    private Long paymentAmount;
+
+
+    /** 免费时长 */
+    @Excel(name = "免费时长")
+    private Long freeDuration;
+
 
     private List country;
 
+    /**
+     * 评分信息
+     */
+    private HashMap movieRate;
+
+
+
+    public Long getFreeDuration() {
+        return freeDuration;
+    }
+
+    public void setFreeDuration(Long freeDuration) {
+        this.freeDuration = freeDuration;
+    }
+
+    public Long getMovieVideosCount() {
+        return movieVideosCount;
+    }
+
+    public void setMovieVideosCount(Long movieVideosCount) {
+        this.movieVideosCount = movieVideosCount;
+    }
+
+    public Long getUserCollectsCount() {
+        return userCollectsCount;
+    }
+
+    public void setUserCollectsCount(Long userCollectsCount) {
+        this.userCollectsCount = userCollectsCount;
+    }
+
+
+
+
+    public Long getIsPay() {
+        return isPay;
+    }
+
+    public void setIsPay(Long isPay) {
+        this.isPay = isPay;
+    }
+
+    public Long getPaymentAmount() {
+        return paymentAmount;
+    }
+
+    public void setPaymentAmount(Long paymentAmount) {
+        this.paymentAmount = paymentAmount;
+    }
+
+
+
+    public HashMap getMovieRate() {
+        return movieRate;
+    }
+
+    public void setMovieRate(HashMap movieRate) {
+        this.movieRate = movieRate;
+    }
 
     public void setVersion(Long version)
     {

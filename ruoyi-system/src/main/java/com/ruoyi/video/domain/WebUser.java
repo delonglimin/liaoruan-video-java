@@ -48,6 +48,44 @@ public class WebUser extends BaseEntity
     @Excel(name = "收藏数")
     private String userCollectCount;
 
+    /** 金币数 */
+    @Excel(name = "金币数")
+    private String walletGold;
+
+
+    /** 会员类型 */
+    @Excel(name = "会员类型")
+    private String memberType;
+
+    public String getWalletGold() {
+        return walletGold;
+    }
+
+    public void setWalletGold(String walletGold) {
+        this.walletGold = walletGold;
+    }
+
+    public String getMemberType() {
+        return memberType;
+    }
+
+    public void setMemberType(String memberType) {
+        this.memberType = memberType;
+    }
+
+    public Date getExpireTime() {
+        return expireTime;
+    }
+
+    public void setExpireTime(Date expireTime) {
+        this.expireTime = expireTime;
+    }
+
+    /** 会员过期时间 */
+    @Excel(name = "会员过期时间")
+    private Date expireTime;
+
+
     /** 最后登录时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "最后登录时间", width = 30, dateFormat = "yyyy-MM-dd")
