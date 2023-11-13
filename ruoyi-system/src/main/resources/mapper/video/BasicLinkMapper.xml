@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.video.mapper.BasicLinkMapper">
+
+    <resultMap type="BasicLink" id="BasicLinkResult">
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="version"    column="version"    />
+        <result property="id"    column="id"    />
+        <result property="text"    column="text"    />
+        <result property="url"    column="url"    />
+    </resultMap>
+
+    <sql id="selectBasicLinkVo">
+        select create_time, update_time, create_by, update_by, remark, version, id, text, url from basic_link
+    </sql>
+
+    <select id="selectBasicLinkList" parameterType="BasicLink" resultMap="BasicLinkResult">
+        <include refid="selectBasicLinkVo"/>
+        <where>
+            <if test="version != null "> and version = #{version}</if>
+            <if test="text != null  and text != ''"> and text = #{text}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+        </where>
+    </select>
+
+    <select id="selectBasicLinkById" parameterType="Long" resultMap="BasicLinkResult">
+        <include refid="selectBasicLinkVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBasicLink" parameterType="BasicLink" useGeneratedKeys="true" keyProperty="id">
+        insert into basic_link
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            <if test="version != null">version,</if>
+            <if test="text != null">text,</if>
+            <if test="url != null">url,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="version != null">#{version},</if>
+            <if test="text != null">#{text},</if>
+            <if test="url != null">#{url},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBasicLink" parameterType="BasicLink">
+        update basic_link
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="text != null">text = #{text},</if>
+            <if test="url != null">url = #{url},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBasicLinkById" parameterType="Long">
+        delete from basic_link where id = #{id}
+    </delete>
+
+    <delete id="deleteBasicLinkByIds" parameterType="String">
+        delete from basic_link where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

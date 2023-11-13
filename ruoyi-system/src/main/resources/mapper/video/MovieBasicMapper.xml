@@ -63,23 +63,19 @@
         <association property="moviePv"  javaType="java.util.HashMap">
             <result property="pv" column="pv" />
         </association>
-        <collection property="casts" javaType="java.util.List" ofType="java.util.HashMap">
-            <result property="id"    column="cast_id"    />
-            <association property="actor"    javaType="java.util.HashMap">
-                <result property="name" column="actor_name" />
-            </association>
+        <collection property="casts" javaType="java.util.List" column="id" ofType="java.util.HashMap" select="com.ruoyi.video.mapper.MovieCastMapper.selectMovieCastListByMovieId">
+
         </collection>
     </resultMap>
 
     <select id="selecMovieItems"  parameterType="MovieBasic" resultMap="movieItem">
-        SELECT movie_basic.id,movie_basic.create_time,movie_basic.update_time,movie_basic.is_pay,movie_basic.poster,movie_basic.title,movie_basic.column_value,movie_basic.create_time,movie_cast.id as cast_id,actor.`name` as actor_name
+        SELECT movie_basic.id,movie_basic.create_time,movie_basic.update_time,movie_basic.is_pay,movie_basic.poster,movie_basic.title,movie_basic.column_value
         FROM movie_basic
-                 LEFT JOIN movie_cast ON movie_basic.id = movie_cast.movie_id
-                 LEFT JOIN actor ON movie_cast.actor_id = actor.id
+
         <where>
             <if test="status != null "> and movie_basic.status = #{status}</if>
             <if test="releaseStatus != null "> and movie_basic.release_status = #{releaseStatus}</if>
-            <if test="title != null  and title != ''"> and movie_basic.title = #{title}</if>
+            <if test="title != null  and title != ''"> and movie_basic.title like concat('%', #{title}, '%')</if>
             <if test="genres != null  and genres != ''"> and movie_basic.genres = #{genres}</if>
             <if test="pubdate != null "> and movie_basic.pubdate = #{pubdate}</if>
             <if test="countryIds != null  and countryIds != ''"> and movie_basic.country_ids = #{countryIds}</if>
@@ -95,7 +91,7 @@
         <where>
             <if test="status != null "> and movie_basic.status = #{status}</if>
             <if test="releaseStatus != null "> and movie_basic.release_status = #{releaseStatus}</if>
-            <if test="title != null  and title != ''"> and movie_basic.title = #{title}</if>
+            <if test="title != null  and title != ''"> and movie_basic.title like concat('%', #{title}, '%')</if>
             <if test="genres != null  and genres != ''"> and movie_basic.genres = #{genres}</if>
             <if test="pubdate != null "> and movie_basic.pubdate = #{pubdate}</if>
             <if test="countryIds != null  and countryIds != ''"> and movie_basic.country_ids = #{countryIds}</if>
@@ -117,7 +113,7 @@
         <where>
             <if test="status != null "> and b.status = #{status}</if>
             <if test="releaseStatus != null "> and b.release_status = #{releaseStatus}</if>
-            <if test="title != null  and title != ''"> and b.title = #{title}</if>
+            <if test="title != null  and title != ''"> and movie_basic.title like concat('%', #{title}, '%')</if>
             <if test="bgColor != null  and bgColor != ''"> and b.bg_color = #{bgColor}</if>
             <if test="titleEn != null  and titleEn != ''"> and b.title_en = #{titleEn}</if>
             <if test="titleOriginal != null  and titleOriginal != ''"> and b.title_original = #{titleOriginal}</if>

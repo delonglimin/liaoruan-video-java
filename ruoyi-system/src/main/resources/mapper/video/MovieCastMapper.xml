@@ -31,6 +31,18 @@
         </where>
     </select>
 
+    <resultMap id="movieActor" type="java.util.HashMap">
+        <result property="id"    column="cast_id"    />
+        <association property="actor"    javaType="java.util.HashMap">
+            <result property="name" column="actor_name" />
+        </association>
+    </resultMap>
+
+    <select id="selectMovieCastListByMovieId" parameterType="Long" resultMap="movieActor">
+        SELECT movie_cast.id as cast_id,actor.name as actor_name from movie_cast LEFT JOIN actor ON movie_cast.actor_id = actor.id
+        where movie_id = #{id}
+    </select>
+
     <select id="selectMovieCastListMap" parameterType="MovieCast" resultType="java.util.Map">
         select  c.id, c.movie_id, c.actor_id, c.profession_id ,c.role,a.avatar as actorAvatar, a.birthday as actorBirthday,a.gender as actorGender,a.id as actorId,a.`name` as actorName,p.id as professionId,p.mpath as professionMpath,p.`name` as professionName,bc.`name` as countryName from movie_cast c
         left join actor a on a.id = c.actor_id

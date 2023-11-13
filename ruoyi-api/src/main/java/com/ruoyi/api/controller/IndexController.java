@@ -69,14 +69,14 @@ public class IndexController extends BaseController
 
             MovieBasic mb = new MovieBasic();
             mb.setColumnValue(item.getValue());
-            PageHelper.startPage(0, 14,"id").setReasonable(true);
+            PageHelper.startPage(0, 12,"id desc").setReasonable(true);
             List<HashMap> listMb = movieBasicMapper.selecMovieItems(mb);
             temp.put("rows",listMb);
             PageHelper.clearPage();
 
             // 获取栏目下的排行，根据pv
 
-            PageHelper.startPage(0, 12,"pv desc").setReasonable(true);
+            PageHelper.startPage(0, 14,"pv desc").setReasonable(true);
             List<HashMap> listRanks = movieBasicMapper.selecMovieItemsRank(mb);
             temp.put("ranks",listRanks);
             PageHelper.clearPage();
