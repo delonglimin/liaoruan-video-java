@@ -1,5 +1,6 @@
 package com.ruoyi.video.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 import com.ruoyi.video.domain.Columns;
 
@@ -26,6 +27,12 @@ public interface ColumnsMapper
      * @return 栏目管理集合
      */
     public List<Columns> selectColumnsList(Columns columns);
+
+
+    public List<HashMap> executeSql(String sql);
+
+
+    public List<Columns> selectColumnsWithGenres(Columns columns);
 
     /**
      * 新增栏目管理

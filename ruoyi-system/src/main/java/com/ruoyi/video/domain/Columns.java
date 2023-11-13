@@ -5,6 +5,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
+import java.util.List;
+
 /**
  * 栏目管理对象 columns
  *
@@ -41,6 +43,18 @@ public class Columns extends BaseEntity
     /** 栏目类型 */
     @Excel(name = "栏目类型")
     private String type;
+
+
+    public List<BasicGenre> getGenre() {
+        return genre;
+    }
+
+    public void setGenre(List<BasicGenre> genre) {
+        this.genre = genre;
+    }
+
+    private List<BasicGenre> genre;
+
 
     public void setVersion(Long version)
     {

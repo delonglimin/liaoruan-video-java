@@ -1,5 +1,6 @@
 package com.ruoyi.video.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 import com.ruoyi.video.domain.MovieBasic;
 
@@ -58,4 +59,9 @@ public interface MovieBasicMapper
      * @return 结果
      */
     public int deleteMovieBasicByIds(Long[] ids);
+
+
+
+    public List<HashMap> selecMovieItems(MovieBasic movieBasic);
+    public List<HashMap> selecMovieItemsRank(MovieBasic movieBasic);
 }
