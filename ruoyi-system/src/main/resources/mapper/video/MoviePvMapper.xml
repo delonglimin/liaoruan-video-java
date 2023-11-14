@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.video.mapper.MoviePvMapper">
+
+    <resultMap type="MoviePv" id="MoviePvResult">
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="version"    column="version"    />
+        <result property="pv"    column="pv"    />
+        <result property="id"    column="id"    />
+        <result property="movieId"    column="movieId"    />
+    </resultMap>
+
+    <sql id="selectMoviePvVo">
+        select create_time, update_time, create_by, update_by, remark, version, pv, id, movieId from movie_pv
+    </sql>
+
+    <select id="selectMoviePvList" parameterType="MoviePv" resultMap="MoviePvResult">
+        <include refid="selectMoviePvVo"/>
+        <where>
+            <if test="version != null "> and version = #{version}</if>
+            <if test="pv != null "> and pv = #{pv}</if>
+            <if test="movieId != null "> and movieId = #{movieId}</if>
+        </where>
+    </select>
+
+    <select id="selectMoviePvById" parameterType="Long" resultMap="MoviePvResult">
+        <include refid="selectMoviePvVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertMoviePv" parameterType="MoviePv" useGeneratedKeys="true" keyProperty="id">
+        insert into movie_pv
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            <if test="version != null">version,</if>
+            <if test="pv != null">pv,</if>
+            <if test="movieId != null">movieId,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="version != null">#{version},</if>
+            <if test="pv != null">#{pv},</if>
+            <if test="movieId != null">#{movieId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateMoviePv" parameterType="MoviePv">
+        update movie_pv
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="pv != null">pv = #{pv},</if>
+            <if test="pv = null">pv = #{pv + 1},</if>
+        </trim>
+        where movieId = #{movieId}
+    </update>
+
+    <delete id="deleteMoviePvById" parameterType="Long">
+        delete from movie_pv where id = #{id}
+    </delete>
+
+    <delete id="deleteMoviePvByIds" parameterType="String">
+        delete from movie_pv where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,5 +1,6 @@
 package com.ruoyi.video.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +35,11 @@ public class MovieCastServiceImpl implements IMovieCastService
         return movieCastMapper.selectMovieCastById(id);
     }
 
+    @Override
+    public List<MovieCast>  selectMovieCastListByMovieId(Long id) {
+        return movieCastMapper.selectMovieCastListByMovieId(id);
+    }
+
     /**
      * 查询movie cast列表
      *
@@ -47,7 +53,7 @@ public class MovieCastServiceImpl implements IMovieCastService
     }
 
     @Override
-    public List<Map> selectMovieCastListMap(MovieCast movieCast) {
+    public List<HashMap> selectMovieCastListMap(MovieCast movieCast) {
         return movieCastMapper.selectMovieCastListMap(movieCast);
     }
 

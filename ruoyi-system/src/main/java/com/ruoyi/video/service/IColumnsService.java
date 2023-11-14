@@ -18,6 +18,9 @@ public interface IColumnsService
      * @return 栏目管理
      */
     public Columns selectColumnsById(Long id);
+    public Columns selectColumnsByValue(String value);
+
+
 
     /**
      * 查询栏目管理列表

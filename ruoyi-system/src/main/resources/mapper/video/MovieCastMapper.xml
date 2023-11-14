@@ -21,7 +21,7 @@
         select create_time, update_time, create_by, update_by, remark, version, id, movie_id, actor_id, profession_id from movie_cast
     </sql>
 
-    <select id="selectMovieCastList" parameterType="MovieCast">
+    <select id="selectMovieCastList" parameterType="MovieCast" resultMap="MovieCastResult">
        <include refid="selectMovieCastVo"></include>
         <where>
             <if test="version != null "> and version = #{version}</if>
@@ -43,7 +43,7 @@
         where movie_id = #{id}
     </select>
 
-    <select id="selectMovieCastListMap" parameterType="MovieCast" resultType="java.util.Map">
+    <select id="selectMovieCastListMap" parameterType="MovieCast" resultType="java.util.HashMap">
         select  c.id, c.movie_id, c.actor_id, c.profession_id ,c.role,a.avatar as actorAvatar, a.birthday as actorBirthday,a.gender as actorGender,a.id as actorId,a.`name` as actorName,p.id as professionId,p.mpath as professionMpath,p.`name` as professionName,bc.`name` as countryName from movie_cast c
         left join actor a on a.id = c.actor_id
         LEFT JOIN basic_profession p ON p.id = c.profession_id

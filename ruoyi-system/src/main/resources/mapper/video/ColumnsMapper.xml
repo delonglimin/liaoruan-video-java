@@ -54,6 +54,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
 
+    <select id="selectColumnsByValue" parameterType="String" resultMap="ColumnsResult">
+        <include refid="selectColumnsVo"/>
+        where value = #{value}
+    </select>
+
     <select id="selectColumnsWithGenres"  parameterType="Columns" resultMap="ColumnsResultWithGenre">
         SELECT `columns`.`name`,
         `columns`.`value`,

@@ -32,6 +32,11 @@ public class ColumnsServiceImpl implements IColumnsService
         return columnsMapper.selectColumnsById(id);
     }
 
+    @Override
+    public Columns selectColumnsByValue(String value) {
+        return columnsMapper.selectColumnsByValue(value);
+    }
+
     /**
      * 查询栏目管理列表
      *

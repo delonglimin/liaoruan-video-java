@@ -20,6 +20,8 @@ public interface ColumnsMapper
      */
     public Columns selectColumnsById(Long id);
 
+    public Columns selectColumnsByValue(String value);
+
     /**
      * 查询栏目管理列表
      *

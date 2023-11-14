@@ -85,10 +85,11 @@
     </select>
 
     <select id="selecMovieItemsRank"  parameterType="MovieBasic" resultMap="movieItem">
-        SELECT movie_basic.id,movie_basic.create_time,movie_basic.update_time,movie_basic.is_pay,movie_basic.poster,movie_basic.title,movie_basic.column_value,movie_pv.pv
+        SELECT movie_basic.id,movie_basic.create_time,movie_basic.update_time,movie_basic.is_pay,movie_basic.poster,movie_basic.title,movie_basic.column_value,movie_pv.pv,movie_pv.update_time
         FROM movie_basic
                  LEFT JOIN movie_pv ON movie_pv.movieId = movie_basic.id
         <where>
+            <if test="startTime != null  and endTime != null"> and (movie_pv.update_time between #{startTime} and #{endTime})</if>
             <if test="status != null "> and movie_basic.status = #{status}</if>
             <if test="releaseStatus != null "> and movie_basic.release_status = #{releaseStatus}</if>
             <if test="title != null  and title != ''"> and movie_basic.title like concat('%', #{title}, '%')</if>

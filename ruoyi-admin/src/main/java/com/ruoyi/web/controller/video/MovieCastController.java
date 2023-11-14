@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.video;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
@@ -43,7 +44,7 @@ public class MovieCastController extends BaseController
     public TableDataInfo list(MovieCast movieCast)
     {
         startPage();
-        List<Map> list = movieCastService.selectMovieCastListMap(movieCast);
+        List<HashMap> list = movieCastService.selectMovieCastListMap(movieCast);
         return getDataTable(list);
     }
 

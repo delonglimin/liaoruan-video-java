@@ -1,5 +1,6 @@
 package com.ruoyi.video.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,8 @@ public interface IMovieCastService
      */
     public MovieCast selectMovieCastById(Long id);
 
+    public List<MovieCast>  selectMovieCastListByMovieId(Long id);
+
     /**
      * 查询movie cast列表
      *
@@ -29,7 +32,7 @@ public interface IMovieCastService
      */
     public List<MovieCast> selectMovieCastList(MovieCast movieCast);
 
-    public List<Map> selectMovieCastListMap(MovieCast movieCast);
+    public List<HashMap> selectMovieCastListMap(MovieCast movieCast);
 
     /**
      * 新增movie cast
