@@ -67,4 +67,5 @@ public interface UserRateMapper
      * @return 结果
      */
     public int deleteUserRateByIds(Long[] ids);
+
 }

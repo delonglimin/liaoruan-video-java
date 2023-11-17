@@ -28,6 +28,42 @@ public class WebUser extends BaseEntity
     @Excel(name = "用户邮箱")
     private String email;
 
+    /** 手机号 */
+    @Excel(name = "手机号")
+    private String phone;
+
+    /** 头像 */
+    @Excel(name = "头像")
+    private String avator;
+
+    public String getAvator() {
+        return avator;
+    }
+
+    public void setAvator(String avator) {
+        this.avator = avator;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /** 用户名 */
+    @Excel(name = "用户名")
+    private String username;
+
     /** 密码 */
     @Excel(name = "密码")
     private String password;

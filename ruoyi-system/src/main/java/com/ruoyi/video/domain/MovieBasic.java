@@ -181,12 +181,22 @@ public class MovieBasic extends BaseEntity
     private String endTime;
 
 
-    private List country;
+    private List<BasicCountry> country;
 
     /**
      * 评分信息
      */
     private HashMap movieRate;
+
+    public List<MovieVideos> getMovieVideos() {
+        return movieVideos;
+    }
+
+    public void setMovieVideos(List<MovieVideos> movieVideos) {
+        this.movieVideos = movieVideos;
+    }
+
+    private List<MovieVideos> movieVideos;
 
 
 
@@ -545,11 +555,11 @@ public class MovieBasic extends BaseEntity
                 .toString();
     }
 
-    public List getCountry() {
+    public List<BasicCountry> getCountry() {
         return country;
     }
 
-    public void setCountry(List country) {
+    public void setCountry(List<BasicCountry> country) {
         this.country = country;
     }
 }

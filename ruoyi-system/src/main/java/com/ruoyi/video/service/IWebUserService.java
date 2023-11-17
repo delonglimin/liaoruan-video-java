@@ -19,6 +19,8 @@ public interface IWebUserService
      */
     public WebUser selectWebUserByUserId(Long userId);
 
+    public WebUser selectWebUserByPhone(String phone);
+
     /**
      * 查询用户管理列表
      *
@@ -58,4 +60,11 @@ public interface IWebUserService
      * @return 结果
      */
     public int deleteWebUserByUserId(Long userId);
+
+
+
+    public Boolean checkCollect(Long userId,Long movieId);
+    public Long addCollect(Long userId,Long movieId);
+    public Long cancelCollect(Long userId,Long movieId);
+
 }

@@ -78,8 +78,9 @@
             <if test="title != null  and title != ''"> and movie_basic.title like concat('%', #{title}, '%')</if>
             <if test="genres != null  and genres != ''"> and movie_basic.genres = #{genres}</if>
             <if test="pubdate != null "> and movie_basic.pubdate = #{pubdate}</if>
-            <if test="countryIds != null  and countryIds != ''"> and movie_basic.country_ids = #{countryIds}</if>
-            <if test="languages != null  and languages != ''"> and movie_basic.languages = #{languages}</if>
+            <if test="year != null "> and movie_basic.year = #{year}</if>
+            <if test="countryIds != null  and countryIds != ''"> and FIND_IN_SET(#{countryIds},movie_basic.country_ids)</if>
+            <if test="languages != null  and languages != ''"> and FIND_IN_SET(#{languages},movie_basic.languages)</if>
             <if test="columnValue != null  and columnValue != ''"> and movie_basic.column_value = #{columnValue}</if>
         </where>
     </select>
@@ -95,8 +96,9 @@
             <if test="title != null  and title != ''"> and movie_basic.title like concat('%', #{title}, '%')</if>
             <if test="genres != null  and genres != ''"> and movie_basic.genres = #{genres}</if>
             <if test="pubdate != null "> and movie_basic.pubdate = #{pubdate}</if>
-            <if test="countryIds != null  and countryIds != ''"> and movie_basic.country_ids = #{countryIds}</if>
-            <if test="languages != null  and languages != ''"> and movie_basic.languages = #{languages}</if>
+            <if test="year != null "> and movie_basic.year = #{year}</if>
+            <if test="countryIds != null  and countryIds != ''"> and FIND_IN_SET(#{countryIds},movie_basic.country_ids)</if>
+            <if test="languages != null  and languages != ''"> and FIND_IN_SET(#{languages},movie_basic.languages)</if>
             <if test="columnValue != null  and columnValue != ''"> and movie_basic.column_value = #{columnValue}</if>
         </where>
     </select>

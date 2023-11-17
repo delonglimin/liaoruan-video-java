@@ -36,7 +36,7 @@ public class WebController extends BaseController {
     private IBasicGenreService basicGenreService;
 
     /**
-     *
+     * 导航大栏目
      */
     @GetMapping(value = "/type/{column}")
     public AjaxResult list(@PathVariable String column) {

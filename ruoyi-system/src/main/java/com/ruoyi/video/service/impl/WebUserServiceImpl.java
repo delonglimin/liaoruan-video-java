@@ -32,6 +32,12 @@ public class WebUserServiceImpl implements IWebUserService
         return webUserMapper.selectWebUserByUserId(userId);
     }
 
+    @Override
+    public WebUser selectWebUserByPhone(String Phone)
+    {
+        return webUserMapper.selectWebUserByPhone(Phone);
+    }
+
     /**
      * 查询用户管理列表
      *
@@ -92,5 +98,21 @@ public class WebUserServiceImpl implements IWebUserService
     public int deleteWebUserByUserId(Long userId)
     {
         return webUserMapper.deleteWebUserByUserId(userId);
+    }
+
+    @Override
+    public Boolean checkCollect(Long userId, Long movieId) {
+        Long res = webUserMapper.findCollect(userId,movieId);
+        return res > 0;
+    }
+
+    @Override
+    public Long addCollect(Long userId, Long movieId) {
+        return webUserMapper.addCollect(userId,movieId);
+    }
+
+    @Override
+    public Long cancelCollect(Long userId, Long movieId) {
+        return webUserMapper.cancelCollect(userId,movieId);
     }
 }

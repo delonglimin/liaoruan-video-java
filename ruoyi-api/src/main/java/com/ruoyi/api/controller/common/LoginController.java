@@ -1,86 +1,63 @@
-package com.ruoyi.web.controller.system;
+package com.ruoyi.api.controller.common;
 
-import java.util.List;
-import java.util.Set;
+import java.util.HashMap;
+
+import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.model.RegisterBody;
+import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.framework.web.service.CommonUserService;
+import com.ruoyi.system.service.ISysConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.domain.entity.SysMenu;
-import com.ruoyi.common.core.domain.entity.SysUser;
-import com.ruoyi.common.core.domain.model.LoginBody;
-import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.framework.web.service.SysLoginService;
-import com.ruoyi.framework.web.service.SysPermissionService;
-import com.ruoyi.system.service.ISysMenuService;
+
 
 /**
  * 登录验证
- * 
+ *
  * @author ruoyi
  */
 @RestController
-public class LoginController
-{
-    @Autowired
-    private SysLoginService loginService;
+@RequestMapping("/web/user")
+public class LoginController extends BaseController {
 
     @Autowired
-    private ISysMenuService menuService;
-
-    @Autowired
-    private SysPermissionService permissionService;
+    private CommonUserService commonUserService;
 
     /**
      * 登录方法
-     * 
-     * @param loginBody 登录信息
+     *
      * @return 结果
      */
     @PostMapping("/login")
-    public AjaxResult login(@RequestBody LoginBody loginBody)
-    {
+    public AjaxResult login(@RequestBody HashMap<String, String> params) {
         AjaxResult ajax = AjaxResult.success();
         // 生成令牌
-        String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),
-                loginBody.getUuid());
+        String token = commonUserService.login(params.get("phone"), params.get("password"));
         ajax.put(Constants.TOKEN, token);
         return ajax;
     }
 
     /**
-     * 获取用户信息
-     * 
-     * @return 用户信息
+     * 注册方法
+     *
+     * @return 结果
      */
-    @GetMapping("getInfo")
-    public AjaxResult getInfo()
-    {
-        SysUser user = SecurityUtils.getLoginUser().getUser();
-        // 角色集合
-        Set<String> roles = permissionService.getRolePermission(user);
-        // 权限集合
-        Set<String> permissions = permissionService.getMenuPermission(user);
-        AjaxResult ajax = AjaxResult.success();
-        ajax.put("user", user);
-        ajax.put("roles", roles);
-        ajax.put("permissions", permissions);
-        return ajax;
+    @PostMapping("/reg")
+    public AjaxResult reg(@RequestBody HashMap<String, String> params) {
+//        if (!("true".equals(configService.selectConfigByKey("user.account.registerUser"))))
+//        {
+//            return error("当前系统没有开启注册功能！");
+//        }
+        RegisterBody registerBody = new RegisterBody();
+        registerBody.setUsername(params.get("phone"));
+        registerBody.setPassword(params.get("password"));
+        String msg = commonUserService.register(registerBody);
+        return StringUtils.isEmpty(msg) ? success() : error(msg);
     }
 
-    /**
-     * 获取路由信息
-     * 
-     * @return 路由信息
-     */
-    @GetMapping("getRouters")
-    public AjaxResult getRouters()
-    {
-        Long userId = SecurityUtils.getUserId();
-        List<SysMenu> menus = menuService.selectMenuTreeByUserId(userId);
-        return AjaxResult.success(menuService.buildMenus(menus));
-    }
+
 }

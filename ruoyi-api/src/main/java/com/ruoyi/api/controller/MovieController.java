@@ -5,11 +5,9 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.video.domain.Columns;
-import com.ruoyi.video.domain.MovieBasic;
-import com.ruoyi.video.domain.MovieCast;
-import com.ruoyi.video.domain.MoviePv;
+import com.ruoyi.video.domain.*;
 import com.ruoyi.video.mapper.ColumnsMapper;
 import com.ruoyi.video.mapper.MovieBasicMapper;
 import com.ruoyi.video.mapper.MovieCastMapper;
@@ -17,15 +15,14 @@ import com.ruoyi.video.service.IColumnsService;
 import com.ruoyi.video.service.IMovieBasicService;
 import com.ruoyi.video.service.impl.MovieCastServiceImpl;
 import com.ruoyi.video.service.impl.MoviePvServiceImpl;
+import com.ruoyi.video.service.impl.MovieVideosServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * movieController
@@ -46,18 +43,19 @@ public class MovieController extends BaseController {
     @Autowired
     private MoviePvServiceImpl moviePvService;
 
+    @Autowired
+    private MovieVideosServiceImpl movieVideosService;
+
     /**
      * 获取列表
      */
     @GetMapping("/list")
-    public TableDataInfo list(String keyword) {
-
-        MovieBasic mb = new MovieBasic();
-        if (!StringUtils.isEmpty(keyword)) {
-            mb.setTitle(keyword);
-        }
+    public TableDataInfo list(MovieBasic mb) {
         startPage();
-        List<HashMap> list = movieBasicMapper.selecMovieItems(mb);
+
+        //todo  按照评分和人气排序
+
+        List<HashMap> list = movieBasicMapper.selecMovieItemsRank(mb);
         return getDataTable(list);
 
     }
@@ -71,7 +69,43 @@ public class MovieController extends BaseController {
     @GetMapping("/{id}")
     public AjaxResult list(@PathVariable Long id) {
         MovieBasic mb = movieBasicMapper.selectMovieBasicById(id);
+        MovieVideos p = new MovieVideos();
+        p.setMovieId(id);
+        List<MovieVideos> videos = movieVideosService.selectMovieVideosList(p);
+        mb.setMovieVideos(videos);
         return success(mb);
+
+    }
+
+    /**
+     * 获取视频详情播放页
+     *
+     * @param id
+     * @return
+     */
+
+    @GetMapping("/videos/{id}")
+    public AjaxResult getVideoDetail(@PathVariable Long id) {
+
+        MovieVideos mv = movieVideosService.selectMovieVideosById(id);
+
+        MovieBasic mb = movieBasicMapper.selectMovieBasicById(mv.getMovieId());
+
+        MovieVideos p = new MovieVideos();
+        p.setMovieId(mv.getMovieId());
+        List<MovieVideos> videos = movieVideosService.selectMovieVideosList(p);
+        mb.setMovieVideos(videos);
+
+        HashMap result = new HashMap();
+        result.put("country", mb.getCountry());
+        result.put("movie", mb);
+        result.put("movieId", mb.getId());
+        result.put("title", mv.getTitle());
+        result.put("typeId", mv.getTypeId());
+        result.put("videoInfo", mv.getVideo());
+        result.put("videos", mb.getMovieVideos());
+
+        return success(result);
 
     }
 

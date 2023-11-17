@@ -58,4 +58,6 @@ public interface IUserRateService
      * @return 结果
      */
     public int deleteUserRateById(Long id);
+
+    public Boolean checkRate(Long userId,Long movieId);
 }

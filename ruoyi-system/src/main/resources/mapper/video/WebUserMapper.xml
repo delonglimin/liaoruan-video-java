@@ -31,6 +31,10 @@
         LEFT JOIN user_collect c ON  u.user_id = c.user_id GROUP BY u.user_id
     </sql>
 
+
+    <sql id="selectWebUserSimplaeVo">
+        select * from web_user
+    </sql>
     <select id="selectWebUserList" parameterType="WebUser" resultMap="WebUserResult">
         <include refid="selectWebUserVo"/>
         <where>
@@ -46,7 +50,12 @@
 
     <select id="selectWebUserByUserId" parameterType="Long" resultMap="WebUserResult">
         <include refid="selectWebUserVo"/>
-        where user_id = #{userId}
+        where user_id = #{userId} or phone = #{userId}
+    </select>
+
+    <select id="selectWebUserByPhone" parameterType="String" resultMap="WebUserResult">
+        <include refid="selectWebUserSimplaeVo"/>
+        where  phone = #{phone}
     </select>
 
     <insert id="insertWebUser" parameterType="WebUser" useGeneratedKeys="true" keyProperty="userId">
@@ -64,6 +73,9 @@
             <if test="status != null">status,</if>
             <if test="loginIp != null">login_ip,</if>
             <if test="loginDate != null">login_date,</if>
+            <if test="phone != null">phone,</if>
+            <if test="username != null">username,</if>
+            <if test="avator != null">avator</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="createTime != null">#{createTime},</if>
@@ -78,6 +90,9 @@
             <if test="status != null">#{status},</if>
             <if test="loginIp != null">#{loginIp},</if>
             <if test="loginDate != null">#{loginDate},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="username != null">#{username},</if>
+            <if test="avator != null">#{avator}</if>
         </trim>
     </insert>
 
@@ -96,6 +111,12 @@
             <if test="status != null">status = #{status},</if>
             <if test="loginIp != null">login_ip = #{loginIp},</if>
             <if test="loginDate != null">login_date = #{loginDate},</if>
+
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="username != null">username = #{username},</if>
+            <if test="avator != null">avator = #{avator},</if>
+            <if test="memberType != null">member_type = #{memberType},</if>
+            <if test="walletGold != null">wallet_gold = #{walletGold}</if>
         </trim>
         where user_id = #{userId}
     </update>
@@ -109,5 +130,26 @@
         <foreach item="userId" collection="array" open="(" separator="," close=")">
             #{userId}
         </foreach>
+    </delete>
+
+
+    <select id="findCollect" resultType="Long" >
+        select count(*) from user_collect where user_id = #{userId} and  movie_id = #{movieId}
+    </select>
+
+    <insert id="addCollect" >
+        insert into user_collect
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="movieId != null">movie_id</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="movieId != null">#{movieId}</if>
+        </trim>
+    </insert>
+
+    <delete id="cancelCollect" parameterType="Long">
+        delete from user_collect where user_id = #{userId} and movie_id = #{movieId}
     </delete>
 </mapper>

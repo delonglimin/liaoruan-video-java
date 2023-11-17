@@ -2,6 +2,7 @@ package com.ruoyi.video.mapper;
 
 import java.util.List;
 import com.ruoyi.video.domain.WebUser;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 用户管理Mapper接口
@@ -18,6 +19,7 @@ public interface WebUserMapper
      * @return 用户管理
      */
     public WebUser selectWebUserByUserId(Long userId);
+    public WebUser selectWebUserByPhone(String phone);
 
     /**
      * 查询用户管理列表
@@ -58,4 +60,8 @@ public interface WebUserMapper
      * @return 结果
      */
     public int deleteWebUserByUserIds(Long[] userIds);
+
+    public Long findCollect(@Param("userId") Long userId,@Param("movieId") Long movieId);
+    public Long addCollect(@Param("userId") Long userId,@Param("movieId") Long movieId);
+    public Long cancelCollect(@Param("userId") Long userId,@Param("movieId") Long movieId);
 }

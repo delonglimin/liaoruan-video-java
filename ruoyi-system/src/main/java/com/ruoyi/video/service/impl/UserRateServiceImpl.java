@@ -90,4 +90,13 @@ public class UserRateServiceImpl implements IUserRateService
     {
         return userRateMapper.deleteUserRateById(id);
     }
+
+    @Override
+    public Boolean checkRate(Long userId, Long movieId) {
+        UserRate rate = new UserRate();
+        rate.setUserId(userId);
+        rate.setMovieId(movieId);
+        List<UserRate> res =  userRateMapper.selectUserRateList(rate);
+        return !res.isEmpty();
+    }
 }
