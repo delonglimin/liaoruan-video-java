@@ -103,6 +103,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         temp.setPhonenumber(user.getPhone());
 
 
-        return new LoginUser(temp, new HashSet<String>());
+        return new LoginUser(user.getUserId(), 0L,temp, new HashSet<String>());
     }
 }

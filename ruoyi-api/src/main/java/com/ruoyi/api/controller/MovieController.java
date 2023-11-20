@@ -11,8 +11,7 @@ import com.ruoyi.video.domain.*;
 import com.ruoyi.video.mapper.ColumnsMapper;
 import com.ruoyi.video.mapper.MovieBasicMapper;
 import com.ruoyi.video.mapper.MovieCastMapper;
-import com.ruoyi.video.service.IColumnsService;
-import com.ruoyi.video.service.IMovieBasicService;
+import com.ruoyi.video.service.*;
 import com.ruoyi.video.service.impl.MovieCastServiceImpl;
 import com.ruoyi.video.service.impl.MoviePvServiceImpl;
 import com.ruoyi.video.service.impl.MovieVideosServiceImpl;
@@ -45,6 +44,15 @@ public class MovieController extends BaseController {
 
     @Autowired
     private MovieVideosServiceImpl movieVideosService;
+
+
+    @Autowired
+    private IWebUserService webUserService;
+
+
+
+    @Autowired
+    private IUserMovieService userMovieService;
 
     /**
      * 获取列表
@@ -94,6 +102,17 @@ public class MovieController extends BaseController {
         MovieVideos p = new MovieVideos();
         p.setMovieId(mv.getMovieId());
         List<MovieVideos> videos = movieVideosService.selectMovieVideosList(p);
+
+        if(1L == mb.getIsPay()){
+            // 检查是否会员或者已购买过
+            Boolean auth = checkUserAuth(getUserId(),mb.getId());
+            if(!auth){
+               for (MovieVideos item : videos){
+                   item.getVideo().setUrl("");
+               }
+            }
+        }
+
         mb.setMovieVideos(videos);
 
         HashMap result = new HashMap();
@@ -107,6 +126,20 @@ public class MovieController extends BaseController {
 
         return success(result);
 
+    }
+
+    private Boolean checkUserAuth(Long userId, Long id) {
+        //是否会员
+        WebUser userDetail  = webUserService.selectWebUserByUserId(userId);
+        if(userDetail.getMemberType().equals("1")){
+            UserMovie p = new UserMovie();
+            p.setMovieId(id);
+            p.setUserId(userId);
+            List res = userMovieService.selectUserMovieList(p);
+            return !res.isEmpty();
+        }
+        return true;
+        //是否购买过
     }
 
     /**

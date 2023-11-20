@@ -1,5 +1,6 @@
 package com.ruoyi.video.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 import com.ruoyi.video.domain.WebUser;
 import org.apache.ibatis.annotations.Param;
@@ -64,4 +65,7 @@ public interface WebUserMapper
     public Long findCollect(@Param("userId") Long userId,@Param("movieId") Long movieId);
     public Long addCollect(@Param("userId") Long userId,@Param("movieId") Long movieId);
     public Long cancelCollect(@Param("userId") Long userId,@Param("movieId") Long movieId);
+
+
+    public List<HashMap> findCollectList(@Param("userId") Long userId);
 }

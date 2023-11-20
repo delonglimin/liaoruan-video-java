@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.video.mapper.UserSignLogMapper">
+
+    <resultMap type="UserSignLog" id="UserSignLogResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="signReward"    column="sign_reward"    />
+        <result property="signTime"    column="sign_time"    />
+        <result property="signType"    column="sign_type"    />
+    </resultMap>
+
+    <sql id="selectUserSignLogVo">
+        select id, user_id, sign_reward, sign_time, sign_type from user_sign_log
+    </sql>
+
+    <select id="selectUserSignLogList" parameterType="UserSignLog" resultMap="UserSignLogResult">
+        <include refid="selectUserSignLogVo"/>
+        <where>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="signReward != null  and signReward != ''"> and sign_reward = #{signReward}</if>
+            <if test="params.beginSignTime != null and params.beginSignTime != '' and params.endSignTime != null and params.endSignTime != ''"> and sign_time between #{params.beginSignTime} and #{params.endSignTime}</if>
+            <if test="signType != null "> and sign_type = #{signType}</if>
+        </where>
+    </select>
+
+    <select id="selectUserSignLogById" parameterType="Long" resultMap="UserSignLogResult">
+        <include refid="selectUserSignLogVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertUserSignLog" parameterType="UserSignLog">
+        insert into user_sign_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="signReward != null">sign_reward,</if>
+            <if test="signTime != null">sign_time,</if>
+            <if test="signType != null">sign_type,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="signReward != null">#{signReward},</if>
+            <if test="signTime != null">#{signTime},</if>
+            <if test="signType != null">#{signType},</if>
+        </trim>
+    </insert>
+
+    <update id="updateUserSignLog" parameterType="UserSignLog">
+        update user_sign_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="signReward != null">sign_reward = #{signReward},</if>
+            <if test="signTime != null">sign_time = #{signTime},</if>
+            <if test="signType != null">sign_type = #{signType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserSignLogById" parameterType="Long">
+        delete from user_sign_log where id = #{id}
+    </delete>
+
+    <delete id="deleteUserSignLogByIds" parameterType="String">
+        delete from user_sign_log where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

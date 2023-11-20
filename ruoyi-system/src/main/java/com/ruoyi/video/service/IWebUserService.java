@@ -1,7 +1,9 @@
 package com.ruoyi.video.service;
 
+import java.util.HashMap;
 import java.util.List;
 import com.ruoyi.video.domain.WebUser;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 用户管理Service接口
@@ -66,5 +68,8 @@ public interface IWebUserService
     public Boolean checkCollect(Long userId,Long movieId);
     public Long addCollect(Long userId,Long movieId);
     public Long cancelCollect(Long userId,Long movieId);
+
+
+    public List<HashMap> findCollectList(Long userId);
 
 }

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.video.mapper.UserMovieMapper">
+
+    <resultMap type="UserMovie" id="UserMovieResult">
+        <result property="userId"    column="user_id"    />
+        <result property="movieId"    column="movie_id"    />
+    </resultMap>
+
+    <sql id="selectUserMovieVo">
+        select user_id, movie_id from user_movie
+    </sql>
+
+    <select id="selectUserMovieList" parameterType="UserMovie" resultMap="UserMovieResult">
+        <include refid="selectUserMovieVo"/>
+        <where>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="movieId != null "> and movie_id = #{movieId}</if>
+        </where>
+    </select>
+
+    <select id="selectUserMovieByUserId" parameterType="Long" resultMap="UserMovieResult">
+        <include refid="selectUserMovieVo"/>
+        where user_id = #{userId}
+    </select>
+
+    <insert id="insertUserMovie" parameterType="UserMovie">
+        insert into user_movie
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="movieId != null">movie_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="movieId != null">#{movieId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateUserMovie" parameterType="UserMovie">
+        update user_movie
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="movieId != null">movie_id = #{movieId},</if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
+    <delete id="deleteUserMovieByUserId" parameterType="Long">
+        delete from user_movie where user_id = #{userId}
+    </delete>
+
+    <delete id="deleteUserMovieByUserIds" parameterType="String">
+        delete from user_movie where user_id in
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+</mapper>

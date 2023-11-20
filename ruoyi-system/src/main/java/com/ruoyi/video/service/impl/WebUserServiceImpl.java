@@ -1,5 +1,6 @@
 package com.ruoyi.video.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,5 +115,10 @@ public class WebUserServiceImpl implements IWebUserService
     @Override
     public Long cancelCollect(Long userId, Long movieId) {
         return webUserMapper.cancelCollect(userId,movieId);
+    }
+
+    @Override
+    public List<HashMap> findCollectList(Long userId) {
+        return webUserMapper.findCollectList(userId);
     }
 }

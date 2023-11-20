@@ -6,8 +6,11 @@ import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.video.domain.BasicBanner;
+import com.ruoyi.video.domain.UserMovie;
 import com.ruoyi.video.domain.UserRate;
+import com.ruoyi.video.domain.WebUser;
 import com.ruoyi.video.service.IBasicBannerService;
+import com.ruoyi.video.service.IUserMovieService;
 import com.ruoyi.video.service.IUserRateService;
 import com.ruoyi.video.service.IWebUserService;
 import org.apache.ibatis.annotations.Param;
@@ -33,13 +36,14 @@ public class UserController extends BaseController {
     @Autowired
     private IUserRateService userRateService;
 
+    @Autowired
+    private IUserMovieService userMovieService;
 
-    @GetMapping("/getInfo")
+
+    @GetMapping("/info")
     public AjaxResult getInfo() {
-        SysUser user = SecurityUtils.getLoginUser().getUser();
-        AjaxResult ajax = AjaxResult.success();
-        ajax.put("user", user);
-        return ajax;
+        WebUser userDetail  = webUserService.selectWebUserByUserId(getUserId());
+        return success(userDetail);
     }
 
     // todo 检查权限前置
@@ -49,6 +53,15 @@ public class UserController extends BaseController {
         Boolean res = webUserService.checkCollect(userId, movieId);
         return success(res);
     }
+
+
+    @GetMapping("/collect/findByPage")
+    public TableDataInfo getMyCollet() {
+        Long userId = getUserId();
+        List<HashMap> res = webUserService.findCollectList(userId);
+        return getDataTable(res);
+    }
+
 
     @PostMapping("/collect")
     public AjaxResult addCollect(@RequestBody HashMap<String,String> params) {
@@ -84,5 +97,24 @@ public class UserController extends BaseController {
         Boolean res = userRateService.checkRate(userId, movieId);
         return success(res);
     }
+
+    /**
+     * 查看用户是否购买过
+     * @param movieId
+     * @return
+     */
+
+    @GetMapping("/movie")
+    public AjaxResult userMovie(@RequestParam("movieId") Long movieId) {
+        Long userId = getUserId();
+        UserMovie p = new UserMovie();
+        p.setMovieId(movieId);
+        p.setUserId(userId);
+        List res = userMovieService.selectUserMovieList(p);
+        return success(!res.isEmpty());
+    }
+
+
+
 
 }

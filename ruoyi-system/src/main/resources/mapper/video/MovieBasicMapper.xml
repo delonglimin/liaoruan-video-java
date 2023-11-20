@@ -4,6 +4,47 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.video.mapper.MovieBasicMapper">
 
+    <resultMap type="MovieBasic" id="SimpleMovieBasicResult">
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="version"    column="version"    />
+        <result property="id"    column="id"    />
+        <result property="status"    column="status"    />
+        <result property="releaseStatus"    column="release_status"    />
+        <result property="title"    column="title"    />
+        <result property="bgColor"    column="bg_color"    />
+        <result property="titleEn"    column="title_en"    />
+        <result property="titleOriginal"    column="title_original"    />
+        <result property="akas"    column="akas"    />
+        <result property="genres"    column="genres"    />
+        <result property="pubdate"    column="pubdate"    />
+        <result property="duration"    column="duration"    />
+        <result property="versions"    column="versions"    />
+        <result property="durations"    column="durations"    />
+        <result property="eggHunt"    column="egg_hunt"    />
+        <result property="color"    column="color"    />
+        <result property="seasonCount"    column="season_count"    />
+        <result property="currentSeason"    column="current_season"    />
+        <result property="episodeCount"    column="episode_count"    />
+        <result property="currentEpisode"    column="current_episode"    />
+        <result property="theEnd"    column="the_end"    />
+        <result property="countryIds"    column="country_ids"    />
+        <result property="languages"    column="languages"    />
+        <result property="tags"    column="tags"    />
+        <result property="summary"    column="summary"    />
+        <result property="year"    column="year"    />
+        <result property="poster"    column="poster"    />
+        <result property="releaseDate"    column="release_date"    />
+        <result property="columnValue"    column="column_value"    />
+        <result property="isPay"    column="is_pay"    />
+        <result property="paymentAmount"    column="payment_amount"    />
+        <result property="freeDuration"    column="free_duration"    />
+        <association property="movieRate" column="id" javaType="java.util.HashMap" select="com.ruoyi.video.mapper.UserRateMapper.selectUserRateByMovieId" />
+    </resultMap>
+
     <resultMap type="MovieBasic" id="MovieBasicResult">
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
@@ -57,6 +98,7 @@
         <result property="poster"    column="poster"    />
         <result property="columnValue"    column="column_value"    />
         <result property="isPay"    column="is_pay"    />
+        <result property="rate"    column="rate"    />
         <result property="paymentAmount"    column="payment_amount"    />
         <result property="freeDuration"    column="free_duration"    />
         <association property="movieRate" column="id" javaType="java.util.HashMap" select="com.ruoyi.video.mapper.UserRateMapper.selectUserRateByMovieId" />
@@ -86,9 +128,11 @@
     </select>
 
     <select id="selecMovieItemsRank"  parameterType="MovieBasic" resultMap="movieItem">
-        SELECT movie_basic.id,movie_basic.create_time,movie_basic.update_time,movie_basic.is_pay,movie_basic.poster,movie_basic.title,movie_basic.column_value,movie_pv.pv,movie_pv.update_time
+        SELECT movie_basic.id,movie_basic.create_time,movie_basic.is_pay,movie_basic.poster,movie_basic.title,movie_basic.column_value,movie_pv.pv,movie_pv.update_time
+        ,AVG(user_rate.rate) as rate
         FROM movie_basic
                  LEFT JOIN movie_pv ON movie_pv.movieId = movie_basic.id
+                 LEFT JOIN user_rate ON user_rate.movie_id = movie_basic.id
         <where>
             <if test="startTime != null  and endTime != null"> and (movie_pv.update_time between #{startTime} and #{endTime})</if>
             <if test="status != null "> and movie_basic.status = #{status}</if>
@@ -101,6 +145,7 @@
             <if test="languages != null  and languages != ''"> and FIND_IN_SET(#{languages},movie_basic.languages)</if>
             <if test="columnValue != null  and columnValue != ''"> and movie_basic.column_value = #{columnValue}</if>
         </where>
+        GROUP BY movie_basic.id
     </select>
 
     <sql id="selectMovieBasicVo">

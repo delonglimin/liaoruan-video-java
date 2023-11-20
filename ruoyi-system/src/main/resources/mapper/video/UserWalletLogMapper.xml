@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.video.mapper.UserWalletLogMapper">
+
+    <resultMap type="UserWalletLog" id="UserWalletLogResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="gold"    column="gold"    />
+        <result property="type"    column="type"    />
+    </resultMap>
+
+    <sql id="selectUserWalletLogVo">
+        select id, user_id, gold, type from user_wallet_log
+    </sql>
+
+    <select id="selectUserWalletLogList" parameterType="UserWalletLog" resultMap="UserWalletLogResult">
+        <include refid="selectUserWalletLogVo"/>
+        <where>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="gold != null "> and gold = #{gold}</if>
+            <if test="type != null "> and type = #{type}</if>
+        </where>
+    </select>
+
+    <select id="selectUserWalletLogById" parameterType="Long" resultMap="UserWalletLogResult">
+        <include refid="selectUserWalletLogVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertUserWalletLog" parameterType="UserWalletLog">
+        insert into user_wallet_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="gold != null">gold,</if>
+            <if test="remark != null">remark,</if>
+            <if test="purpose != null">purpose,</if>
+            <if test="type != null">type,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="gold != null">#{gold},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="purpose != null">#{purpose},</if>
+            <if test="type != null">#{type},</if>
+        </trim>
+    </insert>
+
+    <update id="updateUserWalletLog" parameterType="UserWalletLog">
+        update user_wallet_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="gold != null">gold = #{gold},</if>
+            <if test="type != null">type = #{type},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserWalletLogById" parameterType="Long">
+        delete from user_wallet_log where id = #{id}
+    </delete>
+
+    <delete id="deleteUserWalletLogByIds" parameterType="String">
+        delete from user_wallet_log where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

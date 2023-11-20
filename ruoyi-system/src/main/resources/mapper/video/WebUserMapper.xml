@@ -33,7 +33,7 @@
 
 
     <sql id="selectWebUserSimplaeVo">
-        select * from web_user
+        select user_id,email, status,member_type,wallet_gold,expire_time ,phone,username from web_user
     </sql>
     <select id="selectWebUserList" parameterType="WebUser" resultMap="WebUserResult">
         <include refid="selectWebUserVo"/>
@@ -49,7 +49,7 @@
     </select>
 
     <select id="selectWebUserByUserId" parameterType="Long" resultMap="WebUserResult">
-        <include refid="selectWebUserVo"/>
+        <include refid="selectWebUserSimplaeVo"/>
         where user_id = #{userId} or phone = #{userId}
     </select>
 
@@ -133,6 +133,15 @@
     </delete>
 
 
+
+
+    <resultMap type="java.util.HashMap" id="userCollect">
+        <result property="movieId"    column="user_id"    />
+        <result property="userId"    column="movie_id"    />
+       <association property="movie" resultMap="com.ruoyi.video.mapper.MovieBasicMapper.SimpleMovieBasicResult" />
+    </resultMap>
+
+    
     <select id="findCollect" resultType="Long" >
         select count(*) from user_collect where user_id = #{userId} and  movie_id = #{movieId}
     </select>
@@ -152,4 +161,11 @@
     <delete id="cancelCollect" parameterType="Long">
         delete from user_collect where user_id = #{userId} and movie_id = #{movieId}
     </delete>
+
+    <select id="findCollectList" parameterType="Long" resultMap="userCollect">
+       select user_collect.movie_id,user_collect.user_id,movie_basic.id,movie_basic.create_time,movie_basic.update_time,movie_basic.is_pay,movie_basic.poster,movie_basic.title,movie_basic.column_value
+       from  user_collect
+           LEFT JOIN movie_basic
+           ON movie_basic.id = user_collect.movie_id WHERE user_collect.user_id = #{userId}
+    </select>
 </mapper>
