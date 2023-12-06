@@ -86,18 +86,18 @@ public class WebUser extends BaseEntity
 
     /** 金币数 */
     @Excel(name = "金币数")
-    private String walletGold;
+    private Long walletGold;
 
 
     /** 会员类型 */
     @Excel(name = "会员类型")
     private String memberType;
 
-    public String getWalletGold() {
+    public Long getWalletGold() {
         return walletGold;
     }
 
-    public void setWalletGold(String walletGold) {
+    public void setWalletGold(Long walletGold) {
         this.walletGold = walletGold;
     }
 

@@ -9,10 +9,12 @@
         <result property="userId"    column="user_id"    />
         <result property="gold"    column="gold"    />
         <result property="type"    column="type"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="remark"    column="remark"    />
     </resultMap>
 
     <sql id="selectUserWalletLogVo">
-        select id, user_id, gold, type from user_wallet_log
+        select id, user_id, gold, type,create_time,remark from user_wallet_log
     </sql>
 
     <select id="selectUserWalletLogList" parameterType="UserWalletLog" resultMap="UserWalletLogResult">

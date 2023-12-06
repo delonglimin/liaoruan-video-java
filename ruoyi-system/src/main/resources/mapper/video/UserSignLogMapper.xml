@@ -21,7 +21,7 @@
         <where>
             <if test="userId != null "> and user_id = #{userId}</if>
             <if test="signReward != null  and signReward != ''"> and sign_reward = #{signReward}</if>
-            <if test="params.beginSignTime != null and params.beginSignTime != '' and params.endSignTime != null and params.endSignTime != ''"> and sign_time between #{params.beginSignTime} and #{params.endSignTime}</if>
+            <if test="beginSignTime != null and beginSignTime != '' and endSignTime != null and endSignTime != ''"> and sign_time between #{beginSignTime} and #{endSignTime}</if>
             <if test="signType != null "> and sign_type = #{signType}</if>
         </where>
     </select>

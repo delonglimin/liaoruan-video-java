@@ -3,9 +3,11 @@ package com.ruoyi.api.controller;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.video.domain.*;
 import com.ruoyi.video.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -20,6 +22,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserSignController extends BaseController {
+    @Autowired
+    ISysConfigService configService;
+
     @Autowired
     private IUserSignLogService userSignLogService;
 
@@ -63,21 +68,31 @@ public class UserSignController extends BaseController {
      * @return
      */
     @GetMapping("/sign")
+    @Transactional
     public AjaxResult sign() {
         if(this.getSignStatus().isEmpty()){
+            Long reward = 100L;
+            String configReward = configService.selectConfigByKey("user.sign.reward");
+            if(!configReward.isEmpty()){
+                reward = Long.parseLong(configReward);
+            }
+
             UserSignLog p = new UserSignLog();
             p.setUserId(getUserId());
-            p.setSignReward("签到+100");
+            p.setSignReward("签到+"+reward);
             userSignLogService.insertUserSignLog(p);
-            // todo 事务处理
 
             UserWalletLog l = new UserWalletLog();
             l.setUserId(getUserId());
             l.setType(1L);
-            l.setRemark("签到+100");
-            l.setGold(100L);
+            l.setRemark("签到+"+reward);
+            l.setGold(reward);
             userWalletLogService.insertUserWalletLog(l);
-            return success("签到+100");
+
+            WebUser user = webUserService.selectWebUserByUserId(getUserId());
+            user.setWalletGold(user.getWalletGold() + reward);
+            webUserService.updateWebUser(user);
+            return AjaxResult.success("签到+"+reward,true);
         }
         return error("已经签到过啦");
     }

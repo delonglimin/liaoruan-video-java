@@ -33,7 +33,7 @@
 
 
     <sql id="selectWebUserSimplaeVo">
-        select user_id,email, status,member_type,wallet_gold,expire_time ,phone,username from web_user
+        select user_id,email, status,member_type,wallet_gold,expire_time ,phone,username,password from web_user
     </sql>
     <select id="selectWebUserList" parameterType="WebUser" resultMap="WebUserResult">
         <include refid="selectWebUserVo"/>
